@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
+import { Car } from './Car';
+
 export class Game {
 
     speedZ = 30;
@@ -7,13 +9,13 @@ export class Game {
         // Init variables
         // Set 3D scene
         // bind event callbacks
+        this.car = new Car();
         this._initScene(scene, camera);
         this._initListeners()
     }
 
     _initListeners() {
-        document.addEventListener('keydown', this._keydown.bind(this));
-        document.addEventListener('keyup', this._keyup.bind(this));
+
     }
 
     update() {
@@ -49,12 +51,11 @@ export class Game {
     }
 
     _initScene(scene, camera) {
-        this._createCar();
         this._createGrid(scene);
         this._createSunLight(scene);
 
-        scene.add(this.car);
-        this.car.position.y = 1;
+        scene.add(this.car.body);
+        this.car.body.position.y = 1;
         camera.rotateX(-5 * Math.PI / 180);
         camera.position.set(0, 4, 6);
     }
@@ -120,23 +121,5 @@ export class Game {
         scene.add(this.grid);
         this.time = 0;
         this.clock = new THREE.Clock();
-    }
-    _createCar() {
-        const texture = new THREE.TextureLoader().load("/assets/car/car_left.png");
-        const material = new THREE.SpriteMaterial({ map: texture });
-        const sprite = new THREE.Sprite(material);
-        sprite.scale.set(3, 3);
-        const carBody = new THREE.Mesh(
-            new THREE.BoxGeometry(0.5, 3, 2),
-            new THREE.MeshBasicMaterial({ color: 0x049ef4, transparent: true, opacity: 0 })
-        );
-
-        carBody.rotateX(90 * Math.PI / 180);
-        carBody.rotateY(90 * Math.PI / 180);
-        carBody.position.y = 0;
-        carBody.position.z = 0;
-
-        this.car = new THREE.Group();
-        this.car.add(carBody, sprite);
     }
 }

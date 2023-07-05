@@ -7,6 +7,7 @@ export class Car {
 	constructor() {
 		//Méthod appellé à l'instenciation
 		this._createCar();
+		this._initListeners();
 	}
 
 	_initListeners() {
@@ -60,7 +61,7 @@ export class Car {
 		//Reccupère la position de la voiture, et en fonction de sa postion déclanche le changement de sprite centre -> gauche
 
 		// spriteTurnLeft
-		const dureeAnimation = 500;
+		const dureeAnimation = 250;
 		const dureeEtape = 10;
 		let comteur = 0;
 		const interval = setInterval(() => {
@@ -72,7 +73,7 @@ export class Car {
 			}
 			comteur += dureeEtape;
 			this.body.position.x +=
-				(3 / (dureeAnimation / dureeEtape)) * facteurDirection;
+				(5 / (dureeAnimation / dureeEtape)) * facteurDirection;
 		}, dureeEtape);
 	}
 }
