@@ -94,6 +94,17 @@ export class Game {
     _initScene(scene, camera) {
         this._createGrid(scene);
 
+        const material = new THREE.SpriteMaterial({
+            map: new THREE.TextureLoader().load('/assets/background.png'),
+            color: 0xbbbccc
+        });
+        const backgroundSprite = new THREE.Sprite(material);
+        backgroundSprite.scale.set(500, 281);
+        backgroundSprite.position.z = -150;
+        backgroundSprite.position.y = 0;
+
+        scene.add(backgroundSprite);
+
         scene.add(this.car.body);
         this.car.body.position.y = 1;
         camera.rotateX(-5 * Math.PI / 180);
