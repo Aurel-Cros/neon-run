@@ -5,8 +5,6 @@ export class Obstacle {
         this.speedZ = speedZ;
         this.movementSpeed = Math.random() * obstacleSpeedRatio + obstacleSpeedRatio; // The ratio serves both as max value and min value
 
-        console.log(this.movementSpeed);
-
         this._loadSprites();
         this._createObstacle(wayWidth);
 
