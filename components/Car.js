@@ -3,6 +3,7 @@ import * as THREE from "three";
 export class Car {
 	// Flag permet de limiter l'animation de virage et de ne pas la bourriner
 	isTurning = false;
+	animationSpeed = 125;
 
 	constructor(carSize) {
 		//Méthod appellé à l'instenciation
@@ -45,7 +46,6 @@ export class Car {
 	}
 
 	_initIdleAnimation() {
-		console.log("Idle front");
 		clearInterval(this.currentLeftIdle);
 		clearInterval(this.currentRightIdle);
 		this.currentIdleFrame = 1;
@@ -57,11 +57,10 @@ export class Car {
 				this.sprite.material.map = this.textures.front2;
 				this.currentIdleFrame = 1;
 			}
-		}, 250);
+		}, this.animationSpeed);
 	}
 
 	_initIdleLeftAnimation() {
-		console.log("Idle left");
 		this.currentLeftIdleFrame = 1;
 		this.currentLeftIdle = setInterval(() => {
 			if (this.currentLeftIdleFrame == 1) {
@@ -71,11 +70,10 @@ export class Car {
 				this.sprite.material.map = this.textures.left6;
 				this.currentLeftIdleFrame = 1;
 			}
-		}, 250);
+		}, this.animationSpeed);
 	}
 
 	_initIdleRightAnimation() {
-		console.log("Idle right");
 		this.currentRightIdleFrame = 1;
 		this.currentRightIdle = setInterval(() => {
 			if (this.currentRightIdleFrame == 1) {
@@ -85,7 +83,7 @@ export class Car {
 				this.sprite.material.map = this.textures.right6;
 				this.currentRightIdleFrame = 1;
 			}
-		}, 250);
+		}, this.animationSpeed);
 	}
 
 	_AnimateCenterToLeft() {
@@ -107,7 +105,7 @@ export class Car {
 				clearInterval(turnInterval);
 				return;
 			}
-		}, 250 / animationFrames.length);
+		}, this.animationSpeed / animationFrames.length);
 	}
 
 	_AnimateCenterToRight() {
@@ -129,7 +127,7 @@ export class Car {
 				clearInterval(turnInterval);
 				return;
 			}
-		}, 250 / animationFrames.length);
+		}, this.animationSpeed / animationFrames.length);
 	}
 
 	_AnimateRightToCenter() {
@@ -144,7 +142,6 @@ export class Car {
 		let frameIndex = 0;
 
 		const turnInterval = setInterval(() => {
-			console.log(frameIndex);
 			this.sprite.material.map = animationFrames[frameIndex];
 			frameIndex += 1;
 			if (frameIndex >= animationFrames.length) {
@@ -152,7 +149,7 @@ export class Car {
 				this._initIdleAnimation(turnInterval);
 				return;
 			}
-		}, 250 / animationFrames.length);
+		}, this.animationSpeed / animationFrames.length);
 	}
 
 	_AnimateLeftToCenter() {
@@ -167,7 +164,6 @@ export class Car {
 		let frameIndex = 0;
 
 		const turnInterval = setInterval(() => {
-			console.log(frameIndex);
 			this.sprite.material.map = animationFrames[frameIndex];
 			frameIndex += 1;
 			if (frameIndex >= animationFrames.length) {
@@ -175,7 +171,7 @@ export class Car {
 				this._initIdleAnimation();
 				return;
 			}
-		}, 250 / animationFrames.length);
+		}, this.animationSpeed / animationFrames.length);
 	}
 
 	_initListeners() {
@@ -240,7 +236,7 @@ export class Car {
 
 	_animationTurn(facteurDirection) {
 		//Reccupère la position de la voiture, et en fonction de sa postion déclanche le changement de sprite centre -> gauche
-		const dureeAnimation = 125;
+		const dureeAnimation = this.animationSpeed + 25;
 		const dureeEtape = 10;
 		let compteur = 0;
 		const interval = setInterval(() => {
