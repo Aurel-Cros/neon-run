@@ -1,3 +1,52 @@
-body, canvas {
-    margin: 0;
+@font-face {
+  font-family: "Orbitron";
+  font-display: swap;
+  src: local("Orbitron"),
+    url("/assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
+}
+
+body canvas {
+  margin: 0;
+}
+
+body {
+  background-color: black;
+  font-family: "Orbitron", sans-serif;
+  color: #fff;
+}
+
+#hud {
+  display: flex;
+  position: fixed;
+  width: 100vw;
+  box-sizing: border-box;
+  z-index: 100;
+  padding: 20px;
+}
+
+#heartsWrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.heart {
+  background-image: url("/assets/hud/PVPlein.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+}
+.heart.lost {
+    background-image: url("/assets/hud/PVvide.png");
+}
+
+#timer {
+  margin: 0 0 0 auto;
+  padding: 0;
+
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgb(150, 22, 255);
 }
