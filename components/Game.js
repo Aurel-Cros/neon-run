@@ -11,13 +11,16 @@ export class Game {
     obstacleChance = 0.1;
     obstacleChanceGrowRate = 1.15;
     maxObstacleSpeedRatio = 0.01;
+    carSize = 2;
+    collisionGracePeriod = 2.5;
+    lastCollision = false;
 
     constructor(scene, camera) {
         // Init variables
         // Set 3D scene
         // bind event callbacks
         this.scene = scene;
-        this.car = new Car();
+        this.car = new Car(this.carSize);
         this._initScene(scene, camera);
     }
 
@@ -60,7 +63,21 @@ export class Game {
     }
 
     _checkCollisions() {
-        // Check if player hit an obstacle / a bonus...
+        if (this.lastCollision === false ||
+            this.time - this.lastCollision > this.collisionGracePeriod) {
+            const width = this.carSize;
+            // Check if player hit an obstacle / a bonus...
+            this.obstacles.forEach(obstacle => {
+                if (
+                    Math.abs(obstacle.position.x - this.car.body.position.x) < width &&
+                    Math.abs(obstacle.position.z - this.car.body.position.z) < width
+                ) {
+                    // COLLISION
+                    console.log("BOOM COLLISION");
+                    this.lastCollision = this.time;
+                }
+            })
+        }
     }
 
     _updateHUD() {

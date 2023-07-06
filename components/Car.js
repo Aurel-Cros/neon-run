@@ -4,9 +4,9 @@ export class Car {
 	// Flag permet de limiter l'animation de virage et de ne pas la bourriner
 	isTurning = false;
 
-	constructor() {
+	constructor(carSize) {
 		//Méthod appellé à l'instenciation
-		this._createCar();
+		this._createCar(carSize);
 		this._initListeners();
 	}
 
@@ -28,7 +28,7 @@ export class Car {
 		});
 	}
 
-	_createCar() {
+	_createCar(carSize) {
 		const texture = new THREE.TextureLoader().load(
 			"/assets/car/car_left.png"
 		);
@@ -36,7 +36,7 @@ export class Car {
 		const sprite = new THREE.Sprite(material);
 		sprite.scale.set(3, 3);
 		const carBody = new THREE.Mesh(
-			new THREE.BoxGeometry(0.5, 3, 2),
+			new THREE.BoxGeometry(carSize, 0.5, carSize),
 			new THREE.MeshBasicMaterial({
 				color: 0x049ef4,
 				transparent: true,
@@ -44,8 +44,6 @@ export class Car {
 			})
 		);
 
-		carBody.rotateX((90 * Math.PI) / 180);
-		carBody.rotateY((90 * Math.PI) / 180);
 		carBody.position.y = 0;
 		carBody.position.z = 0;
 		// body correspond a la voiture
@@ -59,9 +57,7 @@ export class Car {
 
 	_animationTurn(facteurDirection) {
 		//Reccupère la position de la voiture, et en fonction de sa postion déclanche le changement de sprite centre -> gauche
-
-		// spriteTurnLeft
-		const dureeAnimation = 250;
+		const dureeAnimation = 125;
 		const dureeEtape = 10;
 		let comteur = 0;
 		const interval = setInterval(() => {
