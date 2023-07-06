@@ -3,7 +3,8 @@ body, canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
+    background-color: grey;
+    color: white;
 }
 .loading-menu {
     height: 100svh;
