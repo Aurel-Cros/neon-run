@@ -51,9 +51,6 @@ export class Obstacle {
             })
         );
 
-        hitBox.rotateX((90 * Math.PI) / 180);
-        hitBox.rotateY((90 * Math.PI) / 180);
-
         this.bundle = new THREE.Group();
 
 
@@ -62,7 +59,7 @@ export class Obstacle {
         }
         this.bundle.position.x = (randomId.way == 'left' ? -1 : (randomId.way == 'center' ? 0 : 1)) * (wayWidth * 1.2);
         this.bundle.position.y = 1;
-        this.bundle.position.z = -100;
+        this.bundle.position.z = -200;
 
         this.bundle.add(hitBox, sprite);
     }
