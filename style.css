@@ -1,3 +1,47 @@
 body, canvas {
     margin: 0;
 }
+
+.loading-menu {
+    height: 100svh;
+    background: url(assets/menu/chargement.png) no-repeat center;
+    background-size: 100% 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+input[type="image"].start-button {
+    position: absolute;
+    top: 86%;
+    left: 50%;
+    width: 7%;
+}
+
+.game-over {
+    height: 100svh;
+    background: url(assets/menu/gameover.gif) rgba(0, 0, 0, 0.88) no-repeat center;
+    background-size: 100% 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+input[type="image"].retry-button {
+    position: absolute;
+    top: 60%;
+    left: 25%;
+    width: 10%;
+}
+  
+input[type="image"].quit-button {
+    position: absolute;
+    top: 60%;
+    left: 65%;
+    width: 10%;
+}
