@@ -18,6 +18,7 @@ export class Obstacle {
             left4: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_left4.png"),
             left5: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_left5.png"),
             left6: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_left6.png"),
+            left7: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_left7.png"),
 
             right1: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_right1.png"),
             right2: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_right2.png"),
@@ -25,13 +26,15 @@ export class Obstacle {
             right4: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_right4.png"),
             right5: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_right5.png"),
             right6: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_right6.png"),
+            right7: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_right7.png"),
 
             center1: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
-            center2: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
-            center3: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
-            center4: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
-            center5: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
-            center6: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
+            center2: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front2.png"),
+            center3: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front3.png"),
+            center4: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front4.png"),
+            center5: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front5.png"),
+            center6: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front6.png"),
+            center7: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front7.png"),
         }
     }
 
@@ -67,7 +70,7 @@ export class Obstacle {
     _selectRandom() {
         const randomWayNumber = (Math.ceil(Math.random() * 3) || 1) - 1;
         const randomWay = randomWayNumber == 2 ? 'right' : (randomWayNumber == 1 ? 'center' : 'left');
-        const randomObstNumber = Math.round(Math.random() * 6) || 1;
+        const randomObstNumber = Math.round(Math.random() * (this.sprites.length / 3)) || 1;
 
         const randomObst = randomWay + randomObstNumber;
         return { id: randomObst, way: randomWay };
