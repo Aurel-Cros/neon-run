@@ -5,12 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script type="module" src="index.js"></script>
+    <script type="module" src="start-game.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-</body>
+    <!-- vue à l'ouverture du navigateur -->
+    <div class="loading-menu">
+        <input class="start-button" type="image" src="assets/menu/startbouton.png" alt="bouton avec la mention start qui déclenche le début du jeu">
+    </div>
 
+    <!-- vue une fois le game over -->
+    <div class="game-over">
+       
+        <!-- bouton retry pour retourner au renderer-->
+        <input class="retry-button" type="image" src="assets/menu/retrybouton.png" alt="bouton avec la mention retry qui déclenche une nouvelle partie">
+
+        <!-- bouton quit pour retourner au loading menu initial -->
+        <input class="quit-button" type="image" src="assets/menu/quitbouton.png" alt="bouton avec la mention quit qui déclenche la sortie du jeu">
+    </div>
+    
+</body>
 </html>
