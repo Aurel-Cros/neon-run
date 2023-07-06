@@ -1,7 +1,10 @@
 body, canvas {
     margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
 }
-
 .loading-menu {
     height: 100svh;
     background: url(assets/menu/chargement.png) no-repeat center;
@@ -12,14 +15,12 @@ body, canvas {
     justify-content: center;
     position: relative;
 }
-
 input[type="image"].start-button {
     position: absolute;
     top: 86%;
     left: 50%;
     width: 7%;
 }
-
 .game-over {
     height: 100svh;
     background: url(assets/menu/gameover.gif) rgba(0, 0, 0, 0.88) no-repeat center;
@@ -30,15 +31,12 @@ input[type="image"].start-button {
     justify-content: center;
     position: relative;
 }
-
-
 input[type="image"].retry-button {
     position: absolute;
     top: 60%;
     left: 25%;
     width: 10%;
 }
-  
 input[type="image"].quit-button {
     position: absolute;
     top: 60%;
