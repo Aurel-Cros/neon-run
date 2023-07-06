@@ -86,6 +86,36 @@ export class Car {
 		}, this.animationSpeed);
 	}
 
+
+	AnimationCrash() {
+		// animation lors d'une collision 
+		const animationFrames = [
+			this.textures.crash1,
+			this.textures.crash2,
+			this.textures.crash3,
+			this.textures.crash4,
+			this.textures.crash5,
+			this.textures.crash6,
+			this.textures.crash7,
+			this.textures.crash8,
+			this.textures.crash9,
+			this.textures.crash10
+		];
+
+		let frameIndex = 0;
+
+		const crashInterval = setInterval(() => {
+			this.sprite.material.map = animationFrames[frameIndex];
+			frameIndex += 1;
+			if (frameIndex >= animationFrames.length) {
+				clearInterval(crashInterval);
+				return;
+			}
+		},
+			this.animationSpeed / animationFrames.length * 10
+		);
+	}
+
 	_AnimateCenterToLeft() {
 		const animationFrames = [
 			this.textures.left1,
@@ -222,7 +252,7 @@ export class Car {
 			new THREE.MeshBasicMaterial({
 				color: 0x049ef4,
 				transparent: true,
-				opacity: 0.5,
+				opacity: 0,
 			})
 		);
 

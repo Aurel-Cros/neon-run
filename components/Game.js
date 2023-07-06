@@ -75,6 +75,7 @@ export class Game {
                     // COLLISION
                     console.log("BOOM COLLISION");
                     this.lastCollision = this.time;
+                    this.car.AnimationCrash();
                 }
             })
         }
