@@ -1,7 +1,7 @@
 # ofp-game-jam
 
 
-Pour la création de "Neon Run" en 2D et 3D nous avons utilisés la librairie "Three.js" ainsi que HTML, CSS et JS. 
+Pour la création de "Neon Run" en 2D et 3D nous avons utilisés la librairie "Three.js" ainsi que HTML, CSS et JavaScript. 
 
 
 1/ Originalité et Créativité : 
