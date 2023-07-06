@@ -18,7 +18,7 @@ La bande audio et les effets speciaux de la voiture (démarage, accident, deplac
 On peux conclure par le fait que "Neon Run" est facile d'utilisation (sans bugs majeurs) en plus d'être intuitif.
 
 
- ---IMPORTANT--- : Afin d'installer le projet veuillez entre les commandes suivantes dans votre console : 
-NPM I 
+ ---IMPORTANT--- : Afin d'installer le projet veuillez entrer les commandes suivantes dans votre console : 
+NPM I (puis) 
 NPX VITE 
  
