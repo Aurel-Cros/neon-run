@@ -5,7 +5,7 @@ Pour la création de "Neon Run" en 2D et 3D nous avons utilisés la librairie "T
 
 
 1/ Originalité et Créativité : 
-"Neon Run" est un jeu placé dans un environnement futuriste du style 'Tron". Le jeu plonge l'utilisateur dans un monde futuriste avec des élèments en art pixels donnat à l'experience un gout des années 80-90.
+"Neon Run" est un jeu placé dans un environnement futuriste du style 'Tron". Le jeu plonge l'utilisateur dans un monde futuriste avec des élèments en art pixels donnant à l'experience un gout des années 80-90.
 
 
 2/ Gameplay et Mécanique :
