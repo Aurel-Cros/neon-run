@@ -1,9 +1,16 @@
 import * as THREE from 'three';
 
 export class Obstacle {
-    constructor() {
+    constructor(wayWidth, speedZ, obstacleSpeedRatio) {
+        this.speedZ = speedZ;
+        this.movementSpeed = Math.random() * obstacleSpeedRatio + obstacleSpeedRatio; // The ratio serves both as max value and min value
+
+        console.log(this.movementSpeed);
+
         this._loadSprites();
-        this._createObstacle();
+        this._createObstacle(wayWidth);
+
+        return this.bundle;
     }
     _loadSprites() {
         this.sprites = {
@@ -21,13 +28,20 @@ export class Obstacle {
             right5: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_right5.png"),
             right6: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_right6.png"),
 
-            center1: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png")
+            center1: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
+            center2: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
+            center3: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
+            center4: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
+            center5: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
+            center6: new THREE.TextureLoader().load("/assets/Obstacle/obstacle_front1.png"),
         }
     }
 
-    _createObstacle() {
-        const material = new THREE.SpriteMaterial({ map: this.sprites[this._selectRandom()] });
+    _createObstacle(wayWidth) {
+        const material = new THREE.SpriteMaterial();
         const sprite = new THREE.Sprite(material);
+        const randomId = this._selectRandom();
+        sprite.material.map = this.sprites[randomId.id];
         sprite.scale.set(3, 3);
 
         const hitBox = new THREE.Mesh(
@@ -35,7 +49,7 @@ export class Obstacle {
             new THREE.MeshBasicMaterial({
                 color: 0xaa5566,
                 transparent: true,
-                opacity: 0.5,
+                opacity: 0,
             })
         );
 
@@ -43,15 +57,24 @@ export class Obstacle {
         hitBox.rotateY((90 * Math.PI) / 180);
 
         this.bundle = new THREE.Group();
+
+
+        this.bundle.updatePosition = () => {
+            this.bundle.position.z += this.speedZ * this.movementSpeed
+        }
+        this.bundle.position.x = (randomId.way == 'left' ? -1 : (randomId.way == 'center' ? 0 : 1)) * (wayWidth * 1.2);
+        this.bundle.position.y = 1;
+        this.bundle.position.z = -100;
+
         this.bundle.add(hitBox, sprite);
     }
 
     _selectRandom() {
-        const randomWayNumber = Math.round(Math.random() * 2);
+        const randomWayNumber = (Math.ceil(Math.random() * 3) || 1) - 1;
         const randomWay = randomWayNumber == 2 ? 'right' : (randomWayNumber == 1 ? 'center' : 'left');
-        const randomObstNumber = Math.round(Math.random() * 6);
+        const randomObstNumber = Math.round(Math.random() * 6) || 1;
 
         const randomObst = randomWay + randomObstNumber;
-        return randomObst;
+        return { id: randomObst, way: randomWay };
     }
 }
