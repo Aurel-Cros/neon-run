@@ -13,7 +13,9 @@ export class Car {
 		this._initIdleAnimation();
 		this._initListeners();
 	}
-
+	_clearIdle() {
+		clearInterval(this.currentIdle);
+	}
 	_loadTextures() {
 		this.textures = {
 			front1: new THREE.TextureLoader().load("/assets/car/car_front1.png"),
@@ -47,48 +49,30 @@ export class Car {
 	}
 
 	_initIdleAnimation() {
-		clearInterval(this.currentLeftIdle);
-		clearInterval(this.currentRightIdle);
-		this.currentIdleFrame = 1;
+		this._clearIdle();
+		const idleFrames = [];
+		setInterval(() => {
+			if (this.body.position.x > 3) {
+				idleFrames.push(this.textures.right5, this.textures.right6)
+			}
+			else if (this.body.position.x < -3) {
+				idleFrames.push(this.textures.left5, this.textures.left6)
+			}
+			else {
+				idleFrames.push(this.textures.front1, this.textures.front2)
+			}
+		}, 250);
+
+		let currentIdleFrame = 0;
 		this.currentIdle = setInterval(() => {
-			if (this.currentIdleFrame == 1) {
-				this.sprite.material.map = this.textures.front1;
-				this.currentIdleFrame = 2;
-			} else {
-				this.sprite.material.map = this.textures.front2;
-				this.currentIdleFrame = 1;
-			}
-		}, this.animationSpeed);
+			this.sprite.material.map = idleFrames[currentIdleFrame];
+			currentIdleFrame = (currentIdleFrame + 1) % 2;
+		}, this.animationSpeed / 2);
 	}
-
-	_initIdleLeftAnimation() {
-		this.currentLeftIdleFrame = 1;
-		this.currentLeftIdle = setInterval(() => {
-			if (this.currentLeftIdleFrame == 1) {
-				this.sprite.material.map = this.textures.left5;
-				this.currentLeftIdleFrame = 2;
-			} else {
-				this.sprite.material.map = this.textures.left6;
-				this.currentLeftIdleFrame = 1;
-			}
-		}, this.animationSpeed);
-	}
-
-	_initIdleRightAnimation() {
-		this.currentRightIdleFrame = 1;
-		this.currentRightIdle = setInterval(() => {
-			if (this.currentRightIdleFrame == 1) {
-				this.sprite.material.map = this.textures.right5;
-				this.currentRightIdleFrame = 2;
-			} else {
-				this.sprite.material.map = this.textures.right6;
-				this.currentRightIdleFrame = 1;
-			}
-		}, this.animationSpeed);
-	}
-
 
 	AnimationCrash() {
+		this._clearIdle();
+		this.isCrashing = true;
 		// animation lors d'une collision 
 		const animationFrames = [
 			this.textures.crash1,
@@ -110,6 +94,8 @@ export class Car {
 			frameIndex += 1;
 			if (frameIndex >= animationFrames.length) {
 				clearInterval(crashInterval);
+				this._initIdleAnimation();
+				this.isCrashing = false;
 				return;
 			}
 		},
@@ -134,6 +120,7 @@ export class Car {
 			frameIndex += 1;
 			if (frameIndex >= animationFrames.length) {
 				clearInterval(turnInterval);
+				this._initIdleAnimation();
 				return;
 			}
 		}, this.animationSpeed / animationFrames.length);
@@ -156,6 +143,7 @@ export class Car {
 			frameIndex += 1;
 			if (frameIndex >= animationFrames.length) {
 				clearInterval(turnInterval);
+				this._initIdleAnimation();
 				return;
 			}
 		}, this.animationSpeed / animationFrames.length);
@@ -177,7 +165,7 @@ export class Car {
 			frameIndex += 1;
 			if (frameIndex >= animationFrames.length) {
 				clearInterval(turnInterval);
-				this._initIdleAnimation(turnInterval);
+				this._initIdleAnimation();
 				return;
 			}
 		}, this.animationSpeed / animationFrames.length);
@@ -193,7 +181,8 @@ export class Car {
 		];
 
 		let frameIndex = 0;
-
+		const frameTime = this.animationSpeed / animationFrames.length;
+		console.log(frameTime);
 		const turnInterval = setInterval(() => {
 			this.sprite.material.map = animationFrames[frameIndex];
 			frameIndex += 1;
@@ -202,7 +191,7 @@ export class Car {
 				this._initIdleAnimation();
 				return;
 			}
-		}, this.animationSpeed / animationFrames.length);
+		}, frameTime);
 	}
 
 	_initListeners() {
@@ -211,32 +200,31 @@ export class Car {
 
 			if (event.code === "ArrowLeft") {
 				if (this.body.position.x > -1) {
-					clearInterval(this.currentIdle);
 					this.isTurning = true;
 					this._animationTurn(-1);
 					this.audioHandler.carTurn();
+					if (this.isCrashing)
+						return
 
 					if (this.body.position.x > 1) {
 						this._AnimateRightToCenter();
 					} else {
 						this._AnimateCenterToLeft();
-
-						this._initIdleLeftAnimation();
 					}
 				}
 			} else if (event.code === "ArrowRight") {
 				if (this.body.position.x < 1) {
-					clearInterval(this.currentIdle);
 					this.isTurning = true;
 					this._animationTurn(1);
 					this.audioHandler.carTurn();
+
+					if (this.isCrashing)
+						return
 
 					if (this.body.position.x < -1) {
 						this._AnimateLeftToCenter();
 					} else {
 						this._AnimateCenterToRight();
-
-						this._initIdleRightAnimation();
 					}
 				}
 			}
@@ -268,8 +256,9 @@ export class Car {
 	}
 
 	_animationTurn(facteurDirection) {
+		this._clearIdle();
 		//Reccupère la position de la voiture, et en fonction de sa postion déclanche le changement de sprite centre -> gauche
-		const dureeAnimation = this.animationSpeed + 25;
+		const dureeAnimation = this.animationSpeed;
 		const dureeEtape = 10;
 		let compteur = 0;
 		const interval = setInterval(() => {
@@ -279,8 +268,7 @@ export class Car {
 				return;
 			}
 			compteur += dureeEtape;
-			this.body.position.x +=
-				(5 / (dureeAnimation / dureeEtape)) * facteurDirection;
+			this.body.position.x += (5 / (dureeAnimation / dureeEtape)) * facteurDirection;
 		}, dureeEtape);
 	}
 }
