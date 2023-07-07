@@ -1,4 +1,4 @@
-class HUD {
+export class HUD {
   constructor() {
     this.time_min = 0;
     this.time_sec = 0;
@@ -8,7 +8,7 @@ class HUD {
   _createHUD() {
     const hud = document.createElement("div");
     hud.id = "hud";
-    document.querySelector("body").appendChild(hud);
+    document.querySelector(".game-wrapper").appendChild(hud);
 
     const heartsWrapper = document.createElement("div");
     heartsWrapper.id = "heartsWrapper";
@@ -26,7 +26,7 @@ class HUD {
   }
 
   timeStart() {
-    setInterval(() => {
+    this.timeInterval = setInterval(() => {
       if (this.time_ms < 10) {
         this.time_ms += 1;
       } else if (this.time_sec < 60) {
@@ -41,7 +41,7 @@ class HUD {
     }, 100);
   }
   timeStop() {
-    clearInterval();
+    clearInterval(this.timeInterval);
   }
 
   loseLife() {

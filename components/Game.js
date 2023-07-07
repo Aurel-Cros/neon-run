@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
 import { Car } from './Car';
 import { Obstacle } from './Obstacle';
 import { AudioHandler } from './Audio';
+import { HUD } from './HUD';
 
 export class Game {
 
@@ -24,6 +24,7 @@ export class Game {
         this.audio = new AudioHandler(camera);
         this.car = new Car(this.carSize, this.audio);
         this._initScene(scene, camera);
+        this.HUD = new HUD();
     }
 
     _generateObstacles() {

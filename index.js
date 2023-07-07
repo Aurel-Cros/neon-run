@@ -1,18 +1,18 @@
 import * as THREE from 'three';
 import { Game } from './components/Game';
-
-let loadingMenu = document.querySelector('.loading-menu');
-let startButton = document.querySelector('.start-button');
+const gameWrapper = document.querySelector(".game-wrapper");
+const loadingMenu = document.querySelector('.loading-menu');
+const startButton = document.querySelector('.start-button');
 
 const startGame = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(1600, 900);
+    renderer.setSize(1200, 900);
     renderer.outputEncoding = THREE.SRGBColorSpace;
 
-    document.body.appendChild(renderer.domElement);
+    document.querySelector(".game-wrapper").appendChild(renderer.domElement);
 
     const gameInstance = new Game(scene, camera);
 
@@ -26,7 +26,7 @@ const startGame = () => {
 }
 
 startButton.addEventListener('click', function () {
-    document.body.replaceChildren();
+    loadingMenu.remove();
     startGame();
 
 });
