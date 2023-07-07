@@ -37,7 +37,7 @@ export class AudioHandler {
 		startAudio.play();
 	}
 
-	//BOUTON VOITURE QUI ROULE
+	// CAR RUNNING
 
 	rouleGame() {
 		this.audioLoader.load(
@@ -49,16 +49,28 @@ export class AudioHandler {
 				backGroundSound.play(); //start sound
 			}
 		);
-		// let startAudio3 = new Audio(
-		// 	"Audio/VEHCar_Voiture sur route (ID 1286)_LS.mp3"
-		// );
-		// startAudio3.play();
+	
 	}
 
-	//TOURNE
+	// CAR TURNING
 
 	tourneGame() {
-		let startAudio = new Audio("/assets/audio/car-turn.mp3");
+		const startAudio = new Audio("/assets/audio/car-turn.mp3");
+		startAudio.play();
+	}
+
+
+	// WIN GAME
+
+	winGame() {
+		const startAudio = new Audio("assets/audio/Win-Sound.mp3");
+		startAudio.play();
+	}
+
+	//GAMEOVER
+
+	gameOver() {
+		const startAudio = new Audio("assets/audio/game-over.mp3");
 		startAudio.play();
 	}
 }
