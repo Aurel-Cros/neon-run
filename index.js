@@ -10,6 +10,7 @@ const startGame = () => {
 
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(1600, 900);
+    renderer.outputEncoding = THREE.SRGBColorSpace;
 
     document.body.appendChild(renderer.domElement);
 

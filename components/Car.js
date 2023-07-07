@@ -200,7 +200,6 @@ export class Car {
 
 		let frameIndex = 0;
 		const frameTime = this.animationSpeed / animationFrames.length;
-		console.log(frameTime);
 		const turnInterval = setInterval(() => {
 			this.sprite.material.map = animationFrames[frameIndex];
 			frameIndex += 1;
