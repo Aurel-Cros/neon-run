@@ -1,52 +1,83 @@
 @font-face {
-  font-family: "Orbitron";
-  font-display: swap;
-  src: local("Orbitron"),
-    url("/assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
+    font-family: "Orbitron";
+    font-display: swap;
+    src: local("Orbitron"),
+        url("/assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
 }
-
-body canvas {
-  margin: 0;
+body,
+canvas {
+    margin: 0;
 }
-
 body {
-  background-color: black;
-  font-family: "Orbitron", sans-serif;
-  color: #fff;
+    background-color: grey;
+    font-family: "Orbitron", sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
-
+.loading-menu {
+    text-align: center
+}
 #hud {
-  display: flex;
-  position: fixed;
-  width: 100vw;
-  box-sizing: border-box;
-  z-index: 100;
-  padding: 20px;
+    display: flex;
+    position: fixed;
+    box-sizing: border-box;
+    width: 100vw;
+    z-index: 100;
+    padding: 20px;
 }
-
 #heartsWrapper {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+    display: flex;
+    gap: 12px;
+    align-items: center;
 }
 .heart {
-  background-image: url("/assets/hud/PVPlein.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 40px;
-  height: 40px;
+    background-image: url("/assets/hud/PVPlein.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
 }
 .heart.lost {
     background-image: url("/assets/hud/PVvide.png");
 }
-
 #timer {
-  margin: 0 0 0 auto;
-  padding: 0;
-
-  font-size: 32px;
-  font-weight: 600;
-  color: #fff;
-  text-shadow: 1px 1px 4px rgb(150, 22, 255);
+    margin: 0 0 0 auto;
+    padding: 0;
+    font-size: 32px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 1px 1px 4px rgb(150, 22, 255);
+}
+#credits {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    box-sizing: border-box;
+    z-index: 200;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+}
+#credits h1 {
+    font-size: 52px;
+    text-shadow: 2px 2px 4px rgb(255, 151, 241);
+}
+#credits .wrapper {
+    margin-bottom: 40px;
+}
+#credits h2 {
+    font-size: 40px;
+    margin-top: 0;
+    text-shadow: 1px 1px 4px rgb(215, 166, 255);
+}
+#credits p {
+    font-size: 28px;
+    margin: 8px;
+    text-shadow: 1px 1px 4px rgb(165, 242, 255);
 }
