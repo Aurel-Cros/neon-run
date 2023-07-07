@@ -12,7 +12,7 @@ export class Car {
 		this._createCar(carSize);
 		this._initIdleAnimation();
 		this._initListeners();
-		
+		this.AnimationGameOver();
 	}
 	_clearIdle() {
 		clearInterval(this.currentIdle);
@@ -47,9 +47,8 @@ export class Car {
 			crash9: new THREE.TextureLoader().load("/assets/car/Crash9.png"),
 			crash10: new THREE.TextureLoader().load("/assets/car/Crash10.png"),
 
-			gameOver0: new THREE.TextureLoader().load("/assets/car/GameOver.png"),
+			gameOver: new THREE.TextureLoader().load("/assets/car/GameOver.png"),
 			gameOver1: new THREE.TextureLoader().load("/assets/car/GameOver1.png"), 
-			gameOver2: new THREE.TextureLoader().load("/assets/car/GameOver2.png"),
 			gameOver3: new THREE.TextureLoader().load("/assets/car/GameOver3.png"),
 			gameOver4: new THREE.TextureLoader().load("/assets/car/GameOver4.png"),
 			gameOver5: new THREE.TextureLoader().load("/assets/car/GameOver5.png"),
@@ -99,9 +98,8 @@ export class Car {
 		// Animation lors d'un game over, game over quand point de vie tombe à 0
 		
 		const animationFrames = [
-			this.textures.gameOver0,
+			this.textures.gameOver,
 			this.textures.gameOver1,
-			this.textures.gameOver2,
 			this.textures.gameOver3,
 			this.textures.gameOver4,
 			this.textures.gameOver5,
@@ -116,7 +114,7 @@ export class Car {
 			this.textures.gameOver14,
 			this.textures.gameOver15,
 			this.textures.gameOver16,
-			this.textures.gameOver0,
+			this.textures.gameOver,
 		];
 		// Avant que l'animation se commence il faudrait que la grille arrete de bouger 
 		// car les sprite sont sur une voiture la voiture à l'arrêt. donc faire stopper la ligne en commentaire ci-dessous puis enclancher l'animation
@@ -137,8 +135,8 @@ export class Car {
 				return;
 			}
 		},
-			this.animationSpeed / animationFrames.length * 18
-			// diviser par 18 car il ya 18 frames
+			this.animationSpeed / animationFrames.length * 17
+			// diviser par 17 car il ya 17 frames
 		);
 		
 			
