@@ -3,10 +3,6 @@ import { Game } from './components/Game';
 
 let loadingMenu = document.querySelector('.loading-menu');
 let startButton = document.querySelector('.start-button');
-let retryButton = document.querySelector('.retry-button');
-let quitButton = document.querySelector('.quit-button');
-let gameOver = document.querySelector('.game-over');
-
 
 const startGame = () => {
     const scene = new THREE.Scene();
@@ -34,16 +30,16 @@ startButton.addEventListener('click', function () {
 
 });
 
-retryButton.addEventListener('click', function () {
-    document.body.replaceChildren();
-    startGame();
-});
+// retryButton.addEventListener('click', function () {
+//     document.body.replaceChildren();
+//     startGame();
+// });
 
-// vers la div game over
-function displayGameOver() {
-    document.body.replaceChildren(gameOver);
-}
+// // vers la div game over
+// function displayGameOver() {
+//     document.body.replaceChildren(gameOver);
+// }
 
-quitButton.addEventListener('click', function () {
-    document.body.replaceChildren(loadingMenu);
-});
+// quitButton.addEventListener('click', function () {
+//     document.body.replaceChildren(loadingMenu);
+// });
