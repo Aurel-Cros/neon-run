@@ -19,7 +19,7 @@ body {
     height: 100vh;
 }
 canvas {
-    aspect-ratio: 16/9;
+    aspect-ratio: 4/3;
 }
 .loading-menu {
     text-align: center
@@ -27,6 +27,8 @@ canvas {
 .game-wrapper {
     position: relative;
     max-width: 100vw;
+    opacity: 1;
+    transition: opacity 5s linear;
 }
 #hud {
     display: flex;

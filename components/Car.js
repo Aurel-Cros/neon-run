@@ -12,6 +12,7 @@ export class Car {
 		this._createCar(carSize);
 		this._initIdleAnimation();
 		this._initListeners();
+		
 	}
 	_clearIdle() {
 		clearInterval(this.currentIdle);
@@ -45,6 +46,25 @@ export class Car {
 			crash8: new THREE.TextureLoader().load("/assets/car/Crash8.png"),
 			crash9: new THREE.TextureLoader().load("/assets/car/Crash9.png"),
 			crash10: new THREE.TextureLoader().load("/assets/car/Crash10.png"),
+
+			gameOver0: new THREE.TextureLoader().load("/assets/car/GameOver.png"),
+			gameOver1: new THREE.TextureLoader().load("/assets/car/GameOver1.png"), 
+			gameOver2: new THREE.TextureLoader().load("/assets/car/GameOver2.png"),
+			gameOver3: new THREE.TextureLoader().load("/assets/car/GameOver3.png"),
+			gameOver4: new THREE.TextureLoader().load("/assets/car/GameOver4.png"),
+			gameOver5: new THREE.TextureLoader().load("/assets/car/GameOver5.png"),
+			gameOver6: new THREE.TextureLoader().load("/assets/car/GameOver6.png"),
+			gameOver7: new THREE.TextureLoader().load("/assets/car/GameOver7.png"),
+			gameOver8: new THREE.TextureLoader().load("/assets/car/GameOver8.png"),
+			gameOver9: new THREE.TextureLoader().load("/assets/car/GameOver9.png"),
+			gameOver10: new THREE.TextureLoader().load("/assets/car/GameOver10.png"),
+			gameOver11: new THREE.TextureLoader().load("/assets/car/GameOver11.png"),
+			gameOver12: new THREE.TextureLoader().load("/assets/car/GameOver12.png"),
+			gameOver13: new THREE.TextureLoader().load("/assets/car/GameOver13.png"),
+			gameOver14: new THREE.TextureLoader().load("/assets/car/GameOver14.png"),
+			gameOver15: new THREE.TextureLoader().load("/assets/car/GameOver15.png"),
+			gameOver16: new THREE.TextureLoader().load("/assets/car/GameOver16.png"),
+
 		};
 	}
 
@@ -67,7 +87,62 @@ export class Car {
 		this.currentIdle = setInterval(() => {
 			this.sprite.material.map = idleFrames[currentIdleFrame];
 			currentIdleFrame = (currentIdleFrame + 1) % 2;
-		}, this.animationSpeed / 2);
+		}, this.animationSpeed /4);
+	}
+
+	AnimationGameOver() {
+		//  animation déclanché par l'événement gameover
+		
+		this._clearIdle();
+		this.isGameOver = true ; 
+
+		// Animation lors d'un game over, game over quand point de vie tombe à 0
+		
+		const animationFrames = [
+			this.textures.gameOver0,
+			this.textures.gameOver1,
+			this.textures.gameOver2,
+			this.textures.gameOver3,
+			this.textures.gameOver4,
+			this.textures.gameOver5,
+			this.textures.gameOver6,
+			this.textures.gameOver7,
+			this.textures.gameOver8,
+			this.textures.gameOver9,
+			this.textures.gameOver10,
+			this.textures.gameOver11,
+			this.textures.gameOver12,
+			this.textures.gameOver13,
+			this.textures.gameOver14,
+			this.textures.gameOver15,
+			this.textures.gameOver16,
+			this.textures.gameOver0,
+		];
+		// Avant que l'animation se commence il faudrait que la grille arrete de bouger 
+		// car les sprite sont sur une voiture la voiture à l'arrêt. donc faire stopper la ligne en commentaire ci-dessous puis enclancher l'animation
+			// _updateGrid() {
+					// Move grid to simulate movement
+					// this.grid.material.uniforms.time.value = this.time;
+				// }
+
+		let frameIndex = 0 ;
+
+		const gameOverInterval = setInterval(() => {
+			this.sprite.material.map = animationFrames[frameIndex];
+			frameIndex += 1;
+			if (frameIndex >= animationFrames.length) {
+				clearInterval(gameOverInterval);
+				this._clearIdle() ; 
+				this.isCrashing = false; 
+				return;
+			}
+		},
+			this.animationSpeed / animationFrames.length * 18
+			// diviser par 18 car il ya 18 frames
+		);
+		
+			
+
 	}
 
 	AnimationCrash() {
