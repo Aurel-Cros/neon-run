@@ -45,6 +45,24 @@ export class Car {
 			crash8: new THREE.TextureLoader().load("/assets/car/Crash8.png"),
 			crash9: new THREE.TextureLoader().load("/assets/car/Crash9.png"),
 			crash10: new THREE.TextureLoader().load("/assets/car/Crash10.png"),
+
+			gameOver1: new THREE.TextureLoader().load("/assets/car/GameOver1.png"), 
+			gameOver2: new THREE.TextureLoader().load("/assets/car/GameOver2.png"),
+			gameOver3: new THREE.TextureLoader().load("/assets/car/GameOver3.png"),
+			gameOver4: new THREE.TextureLoader().load("/assets/car/GameOver4.png"),
+			gameOver5: new THREE.TextureLoader().load("/assets/car/GameOver5.png"),
+			gameOver6: new THREE.TextureLoader().load("/assets/car/GameOver6.png"),
+			gameOver7: new THREE.TextureLoader().load("/assets/car/GameOver7.png"),
+			gameOver8: new THREE.TextureLoader().load("/assets/car/GameOver8.png"),
+			gameOver9: new THREE.TextureLoader().load("/assets/car/GameOver9.png"),
+			gameOver10: new THREE.TextureLoader().load("/assets/car/GameOver10.png"),
+			gameOver11: new THREE.TextureLoader().load("/assets/car/GameOver11.png"),
+			gameOver12: new THREE.TextureLoader().load("/assets/car/GameOver12.png"),
+			gameOver13: new THREE.TextureLoader().load("/assets/car/GameOver13.png"),
+			gameOver14: new THREE.TextureLoader().load("/assets/car/GameOver14.png"),
+			gameOver15: new THREE.TextureLoader().load("/assets/car/GameOver15.png"),
+			gameOver16: new THREE.TextureLoader().load("/assets/car/GameOver16.png"),
+
 		};
 	}
 
