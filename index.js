@@ -18,6 +18,8 @@ const startGame = () => {
     const gameInstance = new Game(scene, camera, gameWrapper);
 
     function animate() {
+        if (gameInstance.stop)
+            return;
         requestAnimationFrame(animate);
 
         gameInstance.update();
