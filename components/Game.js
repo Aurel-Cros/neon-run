@@ -14,7 +14,7 @@ export class Game {
     gameWon = false;
     running = true;
     healthPts = 3;
-    timeToWin = 1; // Time in seconds
+    timeToWin = 180; // Time in seconds
 
     // Obstacle values
     obstacles = [];
