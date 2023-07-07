@@ -11,8 +11,10 @@ export class Game {
     wayWidth = 5;
 
     // Gaming values
+    gameWon = false;
+    running = true;
     healthPts = 3;
-    timeToWin = 180; // Time in seconds
+    timeToWin = 1; // Time in seconds
 
     // Obstacle values
     obstacles = [];
@@ -22,18 +24,24 @@ export class Game {
     collisionGracePeriod = 2.5;
     lastCollision = false;
 
-    constructor(scene, camera) {
+    constructor(scene, camera, gameWrapper) {
         // Init variables
         // Set 3D scene
         // bind event callbacks
         this.scene = scene;
+        this.camera = camera;
+        this.wrapper = gameWrapper;
         this.audio = new AudioHandler(camera);
         this.car = new Car(this.carSize, this.audio);
         this._initScene(scene, camera);
         this.HUD = new HUD(this.healthPts);
+
+        this.audio.startGame();
     }
 
     _generateObstacles() {
+        if (this.gameWon)
+            return;
         const doesGenerate = Math.random() < this.obstacleChance;
         if (doesGenerate) {
             this.obstacleChance = 0.0001;
@@ -58,11 +66,15 @@ export class Game {
     }
 
     update() {
-        this.time += this.clock.getDelta();
-        this._updateGrid();
-        this._checkCollisions();
-        this._generateObstacles();
-        this._updateObstaclesPosition();
+        if (this.running) {
+            const tick = (this.clock.getDelta() * Math.min((this.time * 3.33), 1))
+            this.time += tick || 0.0001;
+            this._updateGrid();
+            this._checkCollisions();
+            this._generateObstacles();
+            this._updateObstaclesPosition();
+            this._checkWin();
+        }
     }
 
     _updateGrid() {
@@ -81,19 +93,20 @@ export class Game {
                     Math.abs(obstacle.position.z - this.car.body.position.z) < width
                 ) {
                     // COLLISION
-                    this._onCollision();
+                    this._onCollision(obstacle);
                 }
             })
         }
     }
-    _onCollision() {
+    _onCollision(obstacle) {
         console.log("BOOM COLLISION");
+        obstacle.removeFromParent();
         this.healthPts -= 1;
+        this.HUD.loseLife();
         if (this.healthPts) {
             this.lastCollision = this.time;
             this.car.AnimationCrash();
             this.audio.carCrash();
-            this.HUD.loseLife();
         }
         else
             this._gameLost();
@@ -106,10 +119,21 @@ export class Game {
     }
 
     _gameLost() {
+        this.running = false;
+        console.log("You loooose !");
         this.audio.loseGame();
+        this.HUD.timeStop();
+        this.car.AnimationGameOver();
     }
     _gameWon() {
+        this.gameWon = true;
+        console.log("You win !");
         this.audio.winGame();
+        this.obstacles.forEach(obstacle => {
+            obstacle.removeFromParent();
+        })
+        this.obstacles = [];
+        this._panCameraAway();
     }
 
     _initScene(scene, camera) {
@@ -163,10 +187,10 @@ export class Game {
         
         attribute float moveableZ;
         
-        varying vec4 vColor;
+        varying vec3 vColor;
       
         void main() {
-          vColor = vec4(0.8, 0.0, 0.9, 0.5);
+          vColor = vec3(0.5, 0.0, 0.5);
           float limLen = gridLimits.y - gridLimits.x;
           vec3 pos = position;
           if (floor(moveableZ + 0.5) > 0.5) { // if a point has "moveableZ" attribute = 1 
@@ -178,17 +202,34 @@ export class Game {
         }
       `,
             fragmentShader: `
-        varying vec4 vColor;
+        varying vec3 vColor;
       
         void main() {
-          gl_FragColor = vec4(vColor); // r, g, b channels + alpha (transparency)
+          gl_FragColor = vec4(vColor, 0); // r, g, b channels + alpha (transparency)
         }
       `,
             vertexColors: THREE.VertexColors
         });
 
         scene.add(this.grid);
+
+        const geometry = new THREE.PlaneGeometry(500, 250);
+        const material = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
+        const plane = new THREE.Mesh(geometry, material);
+        plane.position.y = -1;
+        plane.position.z = -20;
+        plane.rotateX(80.11);
+        scene.add(plane);
+
         this.time = 0;
         this.clock = new THREE.Clock();
+    }
+
+    _panCameraAway() {
+        this.wrapper.style.opacity = 0;
+        this.car.body.position.z -= 0.01
+        setInterval(() => {
+            this.car.body.position.z *= 1.0001;
+        }, 0.1)
     }
 }

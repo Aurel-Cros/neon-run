@@ -39,7 +39,7 @@ export class HUD {
         this.time_sec = 0;
         this.time_ms = 0;
       }
-      timer.innerHTML = `${this.time_min}' ${this.time_sec}'' ${this.time_ms}'''`;
+      timer.innerHTML = `${this.time_min}' ${this.time_sec}'' .${this.time_ms}`;
     }, 100);
   }
   timeStop() {

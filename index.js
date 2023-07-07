@@ -10,11 +10,12 @@ const startGame = () => {
 
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(1200, 900);
+    renderer.antialias = true;
     renderer.outputEncoding = THREE.SRGBColorSpace;
 
-    document.querySelector(".game-wrapper").appendChild(renderer.domElement);
+    gameWrapper.appendChild(renderer.domElement);
 
-    const gameInstance = new Game(scene, camera);
+    const gameInstance = new Game(scene, camera, gameWrapper);
 
     function animate() {
         requestAnimationFrame(animate);
