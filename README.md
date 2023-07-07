@@ -1,5 +1,6 @@
 # ofp-game-jam
 
+![alt text](/assets/background/background/introReadMe.png)
 
 Pour la création de "Neon Run" en 2D et 3D nous avons utilisés la librairie "Three.js" ainsi que HTML, CSS et JavaScript. 
 
@@ -22,6 +23,7 @@ VIDEO YOUTUBE : https://youtu.be/fuy-_deSY84 Réalisée par Stéphane Sevillano 
 
 
  ---IMPORTANT--- : Afin d'installer le projet veuillez entrer les commandes suivantes dans votre console : 
-NPM I (puis) 
-NPX VITE 
+    
+    npm i 
+    npm vite
  
