@@ -71,7 +71,6 @@ export class Obstacle {
         const randomWayNumber = (Math.ceil(Math.random() * 3) || 1) - 1;
         const randomWay = randomWayNumber == 2 ? 'right' : (randomWayNumber == 1 ? 'center' : 'left');
         const randomObstNumber = Math.round(Math.random() * (Object.keys(this.sprites).length / 3)) || 1;
-        console.log(randomObstNumber);
         const randomObst = randomWay + randomObstNumber;
         return { id: randomObst, way: randomWay };
     }
