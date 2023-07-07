@@ -100,7 +100,7 @@ export class Game {
 
         const material = new THREE.SpriteMaterial({
             map: new THREE.TextureLoader().load('/assets/background.png'),
-            color: 0xbbbccc
+            color: 0xffffff
         });
         const backgroundSprite = new THREE.Sprite(material);
         backgroundSprite.scale.set(500, 281);
@@ -119,7 +119,7 @@ export class Game {
 
         let divisions = 90;
         let gridLimit = 200;
-        this.grid = new THREE.GridHelper(gridLimit * 2, divisions, 0xcc22ee, 0xdd00ff);
+        this.grid = new THREE.GridHelper(gridLimit * 2, divisions);
 
         const moveableZ = [];
         for (let i = 0; i <= divisions; i++) {
@@ -146,10 +146,10 @@ export class Game {
         
         attribute float moveableZ;
         
-        varying vec3 vColor;
+        varying vec4 vColor;
       
         void main() {
-          vColor = vec3(1.0, 0.0, 1.0);
+          vColor = vec4(0.8, 0.0, 0.9, 0.5);
           float limLen = gridLimits.y - gridLimits.x;
           vec3 pos = position;
           if (floor(moveableZ + 0.5) > 0.5) { // if a point has "moveableZ" attribute = 1 
@@ -161,10 +161,10 @@ export class Game {
         }
       `,
             fragmentShader: `
-        varying vec3 vColor;
+        varying vec4 vColor;
       
         void main() {
-          gl_FragColor = vec4(vColor, 1.); // r, g, b channels + alpha (transparency)
+          gl_FragColor = vec4(vColor); // r, g, b channels + alpha (transparency)
         }
       `,
             vertexColors: THREE.VertexColors
