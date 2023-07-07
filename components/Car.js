@@ -5,8 +5,9 @@ export class Car {
 	isTurning = false;
 	animationSpeed = 125;
 
-	constructor(carSize) {
-		//Méthod appellé à l'instenciation
+	constructor(carSize, audioHandler) {
+		this.audioHandler = audioHandler;
+
 		this._loadTextures();
 		this._createCar(carSize);
 		this._initIdleAnimation();
@@ -213,6 +214,7 @@ export class Car {
 					clearInterval(this.currentIdle);
 					this.isTurning = true;
 					this._animationTurn(-1);
+					this.audioHandler.carTurn();
 
 					if (this.body.position.x > 1) {
 						this._AnimateRightToCenter();
@@ -227,6 +229,7 @@ export class Car {
 					clearInterval(this.currentIdle);
 					this.isTurning = true;
 					this._animationTurn(1);
+					this.audioHandler.carTurn();
 
 					if (this.body.position.x < -1) {
 						this._AnimateLeftToCenter();

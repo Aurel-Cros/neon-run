@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
 import { Car } from './Car';
 import { Obstacle } from './Obstacle';
+import { AudioHandler } from './Audio';
 
 export class Game {
 
@@ -20,7 +21,8 @@ export class Game {
         // Set 3D scene
         // bind event callbacks
         this.scene = scene;
-        this.car = new Car(this.carSize);
+        this.audio = new AudioHandler(camera);
+        this.car = new Car(this.carSize, this.audio);
         this._initScene(scene, camera);
     }
 
@@ -76,6 +78,7 @@ export class Game {
                     console.log("BOOM COLLISION");
                     this.lastCollision = this.time;
                     this.car.AnimationCrash();
+                    this.audio.carCrash();
                 }
             })
         }
@@ -86,10 +89,10 @@ export class Game {
     }
 
     _gameOver() {
-
+        this.AudioHandler.loseGame();
     }
     _gameWon() {
-
+        this.AudioHandler.winGame();
     }
 
     _initScene(scene, camera) {
