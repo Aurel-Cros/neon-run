@@ -17,7 +17,7 @@ export class AudioHandler {
 
 	_initBackgroundMusic() {
 		this.audioLoader.load(
-			`/assets/audio/background-music.mp3`,
+			`../assets/audio/background-music.mp3`,
 			(buffer) => {
 				this.backGroundSound.setBuffer(buffer); //set source to sound object's buffer
 				this.backGroundSound.setLoop(true); // sound will loop when done
@@ -29,13 +29,13 @@ export class AudioHandler {
 
 	// START
 	startGame() {
-		const startAudio = new Audio("/assets/audio/car-engine-start.mp3");
+		const startAudio = new Audio("../assets/audio/car-engine-start.mp3");
 		startAudio.play();
 	}
 
 	// CRASH
 	carCrash() {
-		const startAudio = new Audio("/assets/audio/car-crash.mp3");
+		const startAudio = new Audio("../assets/audio/car-crash.mp3");
 		startAudio.play();
 	}
 
@@ -57,7 +57,7 @@ export class AudioHandler {
 	// CAR TURNING
 
 	carTurn() {
-		const startAudio = new Audio("/assets/audio/car-turn.mp3");
+		const startAudio = new Audio("../assets/audio/car-turn.mp3");
 		startAudio.volume = 0.5;
 		startAudio.play();
 	}
@@ -66,14 +66,14 @@ export class AudioHandler {
 	// WIN GAME
 
 	winGame() {
-		const startAudio = new Audio("assets/audio/Win-Sound.mp3");
+		const startAudio = new Audio("../assets/audio/Win-Sound.mp3");
 		startAudio.play();
 	}
 
 	//GAMEOVER
 
 	loseGame() {
-		const startAudio = new Audio("assets/audio/game-over.mp3");
+		const startAudio = new Audio("../assets/audio/game-over.mp3");
 		startAudio.play();
 	}
 }

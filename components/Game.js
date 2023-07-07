@@ -5,14 +5,20 @@ import { AudioHandler } from './Audio';
 import { HUD } from './HUD';
 
 export class Game {
-
+    // General flow values
     speedZ = 60;
-    obstacles = [];
+    carSize = 2;
     wayWidth = 5;
+
+    // Gaming values
+    healthPts = 3;
+    timeToWin = 180; // Time in seconds
+
+    // Obstacle values
+    obstacles = [];
     obstacleChance = 0.1;
     obstacleChanceGrowRate = 1.15;
     maxObstacleSpeedRatio = 0.01;
-    carSize = 2;
     collisionGracePeriod = 2.5;
     lastCollision = false;
 
@@ -24,7 +30,7 @@ export class Game {
         this.audio = new AudioHandler(camera);
         this.car = new Car(this.carSize, this.audio);
         this._initScene(scene, camera);
-        this.HUD = new HUD();
+        this.HUD = new HUD(this.healthPts);
     }
 
     _generateObstacles() {
@@ -55,7 +61,6 @@ export class Game {
         this.time += this.clock.getDelta();
         this._updateGrid();
         this._checkCollisions();
-        this._updateHUD();
         this._generateObstacles();
         this._updateObstaclesPosition();
     }
@@ -76,24 +81,35 @@ export class Game {
                     Math.abs(obstacle.position.z - this.car.body.position.z) < width
                 ) {
                     // COLLISION
-                    console.log("BOOM COLLISION");
-                    this.lastCollision = this.time;
-                    this.car.AnimationCrash();
-                    this.audio.carCrash();
+                    this._onCollision();
                 }
             })
         }
     }
-
-    _updateHUD() {
-        // 
+    _onCollision() {
+        console.log("BOOM COLLISION");
+        this.healthPts -= 1;
+        if (this.healthPts) {
+            this.lastCollision = this.time;
+            this.car.AnimationCrash();
+            this.audio.carCrash();
+            this.HUD.loseLife();
+        }
+        else
+            this._gameLost();
     }
 
-    _gameOver() {
-        this.AudioHandler.loseGame();
+    _checkWin() {
+        if (this.time >= this.timeToWin) {
+            this._gameWon();
+        }
+    }
+
+    _gameLost() {
+        this.audio.loseGame();
     }
     _gameWon() {
-        this.AudioHandler.winGame();
+        this.audio.winGame();
     }
 
     _initScene(scene, camera) {

@@ -2,7 +2,7 @@
     font-family: "Orbitron";
     font-display: swap;
     src: local("Orbitron"),
-        url("/assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
+        url("assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
 }
 body,
 canvas {
@@ -43,7 +43,7 @@ canvas {
     align-items: center;
 }
 .heart {
-    background-image: url("/assets/hud/PVPlein.png");
+    background-image: url("assets/hud/PVPlein.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -51,7 +51,7 @@ canvas {
     height: 40px;
 }
 .heart.lost {
-    background-image: url("/assets/hud/PVvide.png");
+    background-image: url("assets/hud/PVvide.png");
 }
 #timer {
     margin: 0 0 0 auto;

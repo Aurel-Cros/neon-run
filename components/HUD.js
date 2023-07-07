@@ -1,9 +1,11 @@
 export class HUD {
-  constructor() {
+  constructor(amountOfLives) {
+    this.lives = amountOfLives;
     this.time_min = 0;
     this.time_sec = 0;
     this.time_ms = 0;
     this._createHUD();
+    this._timeStart();
   }
   _createHUD() {
     const hud = document.createElement("div");
@@ -12,7 +14,7 @@ export class HUD {
 
     const heartsWrapper = document.createElement("div");
     heartsWrapper.id = "heartsWrapper";
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < this.lives; i++) {
       let heart = document.createElement("div");
       heart.classList.add("heart");
       heartsWrapper.appendChild(heart);
@@ -25,7 +27,7 @@ export class HUD {
     hud.appendChild(timer);
   }
 
-  timeStart() {
+  _timeStart() {
     this.timeInterval = setInterval(() => {
       if (this.time_ms < 10) {
         this.time_ms += 1;
@@ -46,7 +48,9 @@ export class HUD {
 
   loseLife() {
     setTimeout(() => {
-      document.querySelector(".heart:last-child").classList.add("lost");
+      const hearts = Array.from(document.querySelectorAll(".heart"));
+      const lastFullHeart = hearts.findLast((a) => (!a.classList.contains('lost')))
+      lastFullHeart.classList.add("lost");
     }, 400);
   }
 }
