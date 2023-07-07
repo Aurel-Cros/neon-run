@@ -1,12 +1,19 @@
 import * as THREE from 'three';
 import { Game } from './components/Game';
 
-window.onload = () => {
+let loadingMenu = document.querySelector('.loading-menu');
+let startButton = document.querySelector('.start-button');
+let retryButton = document.querySelector('.retry-button');
+let quitButton = document.querySelector('.quit-button');
+let gameOver = document.querySelector('.game-over');
+
+
+const startGame = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(1600, 900);
 
     document.body.appendChild(renderer.domElement);
 
@@ -20,3 +27,23 @@ window.onload = () => {
     }
     animate();
 }
+
+startButton.addEventListener('click', function () {
+    document.body.replaceChildren();
+    startGame();
+
+});
+
+retryButton.addEventListener('click', function () {
+    document.body.replaceChildren();
+    startGame();
+});
+
+// vers la div game over
+function displayGameOver() {
+    document.body.replaceChildren(gameOver);
+}
+
+quitButton.addEventListener('click', function () {
+    document.body.replaceChildren(loadingMenu);
+});

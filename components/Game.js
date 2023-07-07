@@ -1,21 +1,51 @@
 import * as THREE from 'three';
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
 import { Car } from './Car';
+import { Obstacle } from './Obstacle';
 
 export class Game {
 
-    speedZ = 30;
+    speedZ = 60;
+    obstacles = [];
+    wayWidth = 5;
+    obstacleChance = 0.1;
+    obstacleChanceGrowRate = 1.15;
+    maxObstacleSpeedRatio = 0.01;
+    carSize = 2;
+    collisionGracePeriod = 2.5;
+    lastCollision = false;
+
     constructor(scene, camera) {
         // Init variables
         // Set 3D scene
         // bind event callbacks
-        this.car = new Car();
+        this.scene = scene;
+        this.car = new Car(this.carSize);
         this._initScene(scene, camera);
-        this._initListeners()
     }
 
-    _initListeners() {
+    _generateObstacles() {
+        const doesGenerate = Math.random() < this.obstacleChance;
+        if (doesGenerate) {
+            this.obstacleChance = 0.0001;
+            this._createObstacle();
+        }
+        else {
+            this.obstacleChance *= this.obstacleChanceGrowRate;
+        }
+    }
 
+    _createObstacle() {
+        const obstacleInstance = new Obstacle(this.wayWidth, this.speedZ, this.maxObstacleSpeedRatio);
+        this.obstacles.push(obstacleInstance);
+
+        this.scene.add(obstacleInstance)
+    }
+
+    _updateObstaclesPosition() {
+        this.obstacles.forEach(obstacle => {
+            obstacle.updatePosition();
+        })
     }
 
     update() {
@@ -23,24 +53,36 @@ export class Game {
         this._updateGrid();
         this._checkCollisions();
         this._updateHUD();
+        this._generateObstacles();
+        this._updateObstaclesPosition();
     }
 
     _updateGrid() {
         // Move grid to simulate movement
         this.grid.material.uniforms.time.value = this.time;
     }
+
     _checkCollisions() {
-        // Check if player hit an obstacle / a bonus...
-    }
-    _updateHUD() {
-        // 
+        if (this.lastCollision === false ||
+            this.time - this.lastCollision > this.collisionGracePeriod) {
+            const width = this.carSize;
+            // Check if player hit an obstacle / a bonus...
+            this.obstacles.forEach(obstacle => {
+                if (
+                    Math.abs(obstacle.position.x - this.car.body.position.x) < width &&
+                    Math.abs(obstacle.position.z - this.car.body.position.z) < width
+                ) {
+                    // COLLISION
+                    console.log("BOOM COLLISION");
+                    this.lastCollision = this.time;
+                    this.car.AnimationCrash();
+                }
+            })
+        }
     }
 
-    _keydown(event) {
-        // Move car
-    }
-    _keyup() {
-        // Stop moving car
+    _updateHUD() {
+        // 
     }
 
     _gameOver() {
@@ -52,20 +94,27 @@ export class Game {
 
     _initScene(scene, camera) {
         this._createGrid(scene);
-        this._createSunLight(scene);
+
+        const material = new THREE.SpriteMaterial({
+            map: new THREE.TextureLoader().load('/assets/background.png'),
+            color: 0xbbbccc
+        });
+        const backgroundSprite = new THREE.Sprite(material);
+        backgroundSprite.scale.set(500, 281);
+        backgroundSprite.position.z = -150;
+        backgroundSprite.position.y = 0;
+
+        scene.add(backgroundSprite);
 
         scene.add(this.car.body);
         this.car.body.position.y = 1;
         camera.rotateX(-5 * Math.PI / 180);
         camera.position.set(0, 4, 6);
     }
-    _createSunLight(scene) {
-        const directionalLight = new THREE.DirectionalLight(0xffbb55, 0.5);
-        scene.add(directionalLight);
-    }
+
     _createGrid(scene) {
 
-        let divisions = 30;
+        let divisions = 90;
         let gridLimit = 200;
         this.grid = new THREE.GridHelper(gridLimit * 2, divisions, 0xcc22ee, 0xdd00ff);
 
