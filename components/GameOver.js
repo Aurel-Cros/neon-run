@@ -36,11 +36,11 @@ export class GameOver {
   _initListeners() {
     const retryButton = document.getElementById("retryButton");
     retryButton.addEventListener("click", () => {
-      document.body.replaceChildren();
+      document.querySelector(".game-wrapper").replaceChildren();
       startGame();
     });
 
     const quitButton = document.getElementById("quitButton");
-    quitButton.addEventListener("click", () => {});
+    quitButton.addEventListener("click", () => { });
   }
 }

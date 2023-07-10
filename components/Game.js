@@ -3,6 +3,7 @@ import { Car } from './Car';
 import { Obstacle } from './Obstacle';
 import { AudioHandler } from './Audio';
 import { HUD } from './HUD';
+import { GameOver } from './GameOver';
 
 export class Game {
     // General flow values
@@ -141,6 +142,13 @@ export class Game {
     _deleteInstance() {
         this.wrapper.replaceChildren();
         this.stop = true;
+        if (this.gameWon) {
+            // Display win screen
+        }
+        else {
+            // Display lose screen
+            new GameOver();
+        }
     }
 
     _initScene(scene, camera) {
