@@ -14,7 +14,7 @@ export class Game {
     gameWon = false;
     running = true;
     healthPts = 3;
-    timeToWin = 1; // Time in seconds
+    timeToWin = 180; // Time in seconds
 
     // Obstacle values
     obstacles = [];
@@ -113,7 +113,7 @@ export class Game {
     }
 
     _checkWin() {
-        if (this.time >= this.timeToWin) {
+        if (this.time >= this.timeToWin && !this.gameWon) {
             this._gameWon();
         }
     }
@@ -133,7 +133,14 @@ export class Game {
             obstacle.removeFromParent();
         })
         this.obstacles = [];
+        this.HUD.timeStop();
         this._panCameraAway();
+        setTimeout(() => { this._deleteInstance() }, 5000);
+    }
+
+    _deleteInstance() {
+        this.wrapper.replaceChildren();
+        this.stop = true;
     }
 
     _initScene(scene, camera) {
@@ -226,10 +233,15 @@ export class Game {
     }
 
     _panCameraAway() {
+        console.log("Pan away")
         this.wrapper.style.opacity = 0;
         this.car.body.position.z -= 0.01
-        setInterval(() => {
-            this.car.body.position.z *= 1.0001;
+        const startTime = this.time;
+        const awayInterval = setInterval(() => {
+            this.car.body.position.z *= 1.05;
+            console.log(this.time, startTime, this.time > (startTime + 5));
+            if (this.time > (startTime + 5))
+                clearInterval(awayInterval);
         }, 0.1)
     }
 }
