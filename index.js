@@ -1,22 +1,43 @@
 import * as THREE from 'three';
 import { Game } from './components/Game';
+const initScreen = () => {
+    const gameWrapper = document.createElement("div");
+    gameWrapper.className = "game-wrapper";
 
-let loadingMenu = document.querySelector('.loading-menu');
-let startButton = document.querySelector('.start-button');
+    const loadingMenu = document.createElement("div");
+    loadingMenu.className = "start-menu";
+
+    const startButton = document.createElement("button"); startButton.className = "start-button";
+
+    startButton.addEventListener('click', function () {
+        loadingMenu.remove();
+        startGame();
+    });
+    loadingMenu.appendChild(startButton);
+    gameWrapper.appendChild(loadingMenu);
+    document.body.appendChild(gameWrapper);
+}
+
+initScreen();
+
+const gameWrapper = document.querySelector(".game-wrapper");
 
 const startGame = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(1600, 900);
+    renderer.setSize(1200, 900);
+    renderer.antialias = true;
     renderer.outputEncoding = THREE.SRGBColorSpace;
 
-    document.body.appendChild(renderer.domElement);
+    gameWrapper.appendChild(renderer.domElement);
 
-    const gameInstance = new Game(scene, camera);
+    const gameInstance = new Game(scene, camera, gameWrapper);
 
     function animate() {
+        if (gameInstance.stop)
+            return;
         requestAnimationFrame(animate);
 
         gameInstance.update();
@@ -24,23 +45,3 @@ const startGame = () => {
     }
     animate();
 }
-
-startButton.addEventListener('click', function () {
-    document.body.replaceChildren();
-    startGame();
-
-});
-
-// retryButton.addEventListener('click', function () {
-//     document.body.replaceChildren();
-//     startGame();
-// });
-
-// // vers la div game over
-// function displayGameOver() {
-//     document.body.replaceChildren(gameOver);
-// }
-
-// quitButton.addEventListener('click', function () {
-//     document.body.replaceChildren(loadingMenu);
-// });
