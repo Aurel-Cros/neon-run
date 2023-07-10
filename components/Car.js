@@ -115,12 +115,6 @@ export class Car {
 			this.textures.gameOver16,
 			this.textures.gameOver,
 		];
-		// Avant que l'animation se commence il faudrait que la grille arrete de bouger 
-		// car les sprite sont sur une voiture la voiture à l'arrêt. donc faire stopper la ligne en commentaire ci-dessous puis enclancher l'animation
-		// _updateGrid() {
-		// Move grid to simulate movement
-		// this.grid.material.uniforms.time.value = this.time;
-		// }
 
 		let frameIndex = 0;
 
@@ -134,12 +128,8 @@ export class Car {
 				return;
 			}
 		},
-			this.animationSpeed / animationFrames.length * 17
-			// diviser par 17 car il ya 17 frames
+			this.animationSpeed
 		);
-
-
-
 	}
 
 	AnimationCrash() {
@@ -171,7 +161,7 @@ export class Car {
 				return;
 			}
 		},
-			this.animationSpeed / animationFrames.length * 10
+			this.animationSpeed
 		);
 	}
 
@@ -267,7 +257,7 @@ export class Car {
 
 	_initListeners() {
 		document.addEventListener("keydown", (event) => {
-			if (this.isTurning) return;
+			if (this.isTurning || this.isGameOver) return;
 
 			if (event.code === "ArrowLeft") {
 				if (this.body.position.x > -1) {

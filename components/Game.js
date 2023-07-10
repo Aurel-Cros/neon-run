@@ -8,6 +8,7 @@ import { GameOver } from './GameOver';
 export class Game {
     // General flow values
     speedZ = 60;
+    speedRatio = 1.25;
     carSize = 2;
     wayWidth = 5;
 
@@ -15,14 +16,14 @@ export class Game {
     gameWon = false;
     running = true;
     healthPts = 3;
-    timeToWin = 180; // Time in seconds
+    timeToWin = 100; // Time in seconds
 
     // Obstacle values
     obstacles = [];
     obstacleChance = 0.1;
     obstacleChanceGrowRate = 1.15;
     maxObstacleSpeedRatio = 0.01;
-    collisionGracePeriod = 2.5;
+    collisionGracePeriod = 1.33;
     lastCollision = false;
 
     constructor(scene, camera, gameWrapper) {
@@ -43,7 +44,7 @@ export class Game {
     _generateObstacles() {
         if (this.gameWon)
             return;
-        const doesGenerate = Math.random() < this.obstacleChance;
+        const doesGenerate = Math.random() < (this.obstacleChance * (1 + this.time / 90));
         if (doesGenerate) {
             this.obstacleChance = 0.0001;
             this._createObstacle();
@@ -54,7 +55,7 @@ export class Game {
     }
 
     _createObstacle() {
-        const obstacleInstance = new Obstacle(this.wayWidth, this.speedZ, this.maxObstacleSpeedRatio);
+        const obstacleInstance = new Obstacle(this.wayWidth, this.speedZ, (this.time / 10000) + this.maxObstacleSpeedRatio);
         this.obstacles.push(obstacleInstance);
 
         this.scene.add(obstacleInstance)
@@ -71,6 +72,7 @@ export class Game {
             const tick = (this.clock.getDelta() * Math.min((this.time * 3.33), 1))
             this.time += tick || 0.0001;
             this._updateGrid();
+            this._updateBackground();
             this._checkCollisions();
             this._generateObstacles();
             this._updateObstaclesPosition();
@@ -80,7 +82,11 @@ export class Game {
 
     _updateGrid() {
         // Move grid to simulate movement
-        this.grid.material.uniforms.time.value = this.time;
+        this.grid.material.uniforms.time.value = this.time * this.speedRatio;
+    }
+
+    _updateBackground() {
+        this.backgroundSprite.position.y += (this.time / 1500);
     }
 
     _checkCollisions() {
@@ -150,7 +156,6 @@ export class Game {
         const startTime = this.time;
         const awayInterval = setInterval(() => {
             this.car.body.position.z *= 1.05;
-            console.log(this.time, startTime, this.time > (startTime + 5));
             if (this.time > (startTime + 5))
                 clearInterval(awayInterval);
         }, 0.1)
@@ -174,12 +179,12 @@ export class Game {
             map: new THREE.TextureLoader().load('/assets/background.png'),
             color: 0xffffff
         });
-        const backgroundSprite = new THREE.Sprite(material);
-        backgroundSprite.scale.set(500, 281);
-        backgroundSprite.position.z = -150;
-        backgroundSprite.position.y = 0;
+        this.backgroundSprite = new THREE.Sprite(material);
+        this.backgroundSprite.scale.set(500, 281);
+        this.backgroundSprite.position.z = -150;
+        this.backgroundSprite.position.y = -30;
 
-        scene.add(backgroundSprite);
+        scene.add(this.backgroundSprite);
 
         scene.add(this.car.body);
         this.car.body.position.y = 1;
