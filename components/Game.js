@@ -125,6 +125,8 @@ export class Game {
         this.audio.loseGame();
         this.HUD.timeStop();
         this.car.AnimationGameOver();
+        setTimeout(() => { this._fadeOutCamera() }, 2000);
+        setTimeout(() => { this._deleteInstance() }, 7000);
     }
     _gameWon() {
         this.gameWon = true;
@@ -136,9 +138,23 @@ export class Game {
         this.obstacles = [];
         this.HUD.timeStop();
         this._panCameraAway();
+        this._fadeOutCamera();
         setTimeout(() => { this._deleteInstance() }, 5000);
     }
+    _fadeOutCamera() {
+        this.wrapper.style.opacity = 0;
+    }
 
+    _panCameraAway() {
+        this.car.body.position.z -= 0.01
+        const startTime = this.time;
+        const awayInterval = setInterval(() => {
+            this.car.body.position.z *= 1.05;
+            console.log(this.time, startTime, this.time > (startTime + 5));
+            if (this.time > (startTime + 5))
+                clearInterval(awayInterval);
+        }, 0.1)
+    }
     _deleteInstance() {
         this.wrapper.replaceChildren();
         this.stop = true;
@@ -238,18 +254,5 @@ export class Game {
 
         this.time = 0;
         this.clock = new THREE.Clock();
-    }
-
-    _panCameraAway() {
-        console.log("Pan away")
-        this.wrapper.style.opacity = 0;
-        this.car.body.position.z -= 0.01
-        const startTime = this.time;
-        const awayInterval = setInterval(() => {
-            this.car.body.position.z *= 1.05;
-            console.log(this.time, startTime, this.time > (startTime + 5));
-            if (this.time > (startTime + 5))
-                clearInterval(awayInterval);
-        }, 0.1)
     }
 }
