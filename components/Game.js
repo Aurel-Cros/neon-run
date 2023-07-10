@@ -30,12 +30,12 @@ export class Game {
     constructor(scene, camera, gameWrapper) {
         this.scene = scene;
         this.decor = {};
+        this.audio = new AudioHandler(camera);
         this.car = new Car(this.carSize, this.audio);
         this._initScene(scene, camera);
 
         this.camera = camera;
         this.wrapper = gameWrapper;
-        this.audio = new AudioHandler(camera);
         this.HUD = new HUD(this.healthPts);
 
         this.audio.startGame();
