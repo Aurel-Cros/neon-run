@@ -32,6 +32,7 @@ export class Game {
         this.decor = {};
         this.car = new Car(this.carSize, this.audio);
         this._initScene(scene, camera);
+
         this.camera = camera;
         this.wrapper = gameWrapper;
         this.audio = new AudioHandler(camera);
@@ -83,6 +84,7 @@ export class Game {
         // Move grid to simulate movement
         this.grid.material.uniforms.time.value = this.time * this.speedRatio;
         this.decor.rails.moveDecor(this.time);
+        this.decor.trees.moveDecor(this.time);
     }
 
     _updateBackground() {

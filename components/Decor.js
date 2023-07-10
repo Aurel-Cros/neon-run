@@ -1,11 +1,13 @@
 import * as THREE from 'three';
 class Decor {
-    instancesNeeded = 20;
-
     constructor(scene) {
         this.scene = scene;
         this.allDecors = [];
 
+        this.instancesNeeded = 20;
+
+        // Sets the offset from center of screen
+        this.xPosition = 0;
         // Sets the size of each element
         this.decorSize = [0, 0, 0];
         // Negative number - Sets the separation between two decor elements
@@ -20,16 +22,7 @@ class Decor {
 
     _initDraw() {
         for (let i = 0; i < this.instancesNeeded * 2; i++) {
-
-            const side = i >= this.instancesNeeded ? -1 : 1;
-
-            const newDecor = this._createDecor();
-            newDecor.position.x = 10.5 * side;
-            newDecor.position.z = (i % this.instancesNeeded) * this.decorOffset;
-            newDecor.rotateY(Math.PI / 180 * 90);
-
-            this.allDecors.push(newDecor);
-            this.scene.add(newDecor);
+            // Draw instructions depending on type of asset
         }
     }
     moveDecor(speed) {
@@ -61,21 +54,7 @@ class Decor {
     }
 
     _createRow() {
-        const lastDecor = this.allDecors.findLast(a => a);
-        const nextPositionZ = lastDecor.position.z + this.decorOffset;
-
-        const nextDecorLeft = this._createDecor();
-        nextDecorLeft.position.x = -10.5;
-        nextDecorLeft.position.z = nextPositionZ;
-        nextDecorLeft.rotateY(Math.PI / 180 * 90);
-
-        const nextDecorRight = this._createDecor();
-        nextDecorRight.position.x = 10.5;
-        nextDecorRight.position.z = nextPositionZ;
-        nextDecorRight.rotateY(Math.PI / 180 * 90);
-
-        this.scene.add(nextDecorLeft, nextDecorRight);
-        this.allDecors.push(nextDecorLeft, nextDecorRight);
+        // Draw instructions depending on type of asset
     }
 }
 
@@ -83,6 +62,7 @@ export class Rails extends Decor {
     constructor(scene) {
         super(scene);
         this.previousPos = 0;
+        this.xPosition = 10.5;
         this.decorSize = [7.48, 1.66, 0]; // Sets the size of each element
         this.decorOffset = -6.9; // Sets
     }
@@ -109,35 +89,95 @@ export class Rails extends Decor {
             }
         }, 5000)
     }
+    _initDraw() {
+        for (let i = 0; i < this.instancesNeeded * 2; i++) {
+
+            const side = i >= this.instancesNeeded ? -1 : 1;
+
+            const newDecor = this._createDecor();
+            newDecor.position.x = this.xPosition * side;
+            newDecor.position.z = (i % this.instancesNeeded) * this.decorOffset;
+            newDecor.rotateY(Math.PI / 180 * 90);
+
+            this.allDecors.push(newDecor);
+            this.scene.add(newDecor);
+        }
+    }
+    _createRow() {
+        const lastDecor = this.allDecors.findLast(a => a);
+        const nextPositionZ = lastDecor.position.z + this.decorOffset;
+
+        const nextDecorLeft = this._createDecor();
+        nextDecorLeft.position.x = -this.xPosition;
+        nextDecorLeft.position.z = nextPositionZ;
+        nextDecorLeft.rotateY(Math.PI / 180 * 90);
+
+        const nextDecorRight = this._createDecor();
+        nextDecorRight.position.x = this.xPosition;
+        nextDecorRight.position.z = nextPositionZ;
+        nextDecorRight.rotateY(Math.PI / 180 * 90);
+
+        this.scene.add(nextDecorLeft, nextDecorRight);
+        this.allDecors.push(nextDecorLeft, nextDecorRight);
+    }
 }
 
 export class Trees extends Decor {
     constructor(scene) {
         super(scene);
-        this.decorSize = [7.48, 1.66, 0]; // Sets the size of each element
-        this.decorOffset = -6.9; //
+        this.instancesNeeded = 3;
+        this.xPosition = 25;
+        this.decorSize = [34, 49.9, 0]; // Sets the size of each element
+        this.decorOffset = -50; // Sets the space between two elements
     }
     _loadTexture() {
-        const orangeTexture = new THREE.TextureLoader().load('../assets/rails/rail_orange.png');
-        const greyTexture = new THREE.TextureLoader().load('../assets/rails/rail_neutre.png');
-        const blueTexture = new THREE.TextureLoader().load('../assets/rails/rail_bleu.png');
-        const purpleTexture = new THREE.TextureLoader().load('../assets/rails/rail_mauve.png');
+        const palmTreeTexture1 = new THREE.TextureLoader().load('../assets/PalmTree/palmtree.png');
+        const palmTreeTexture2 = new THREE.TextureLoader().load('../assets/PalmTree/palmtree2.png');
+        const palmTreeTexture3 = new THREE.TextureLoader().load('../assets/PalmTree/palmtree3.png');
 
-        this.decorTexture = orangeTexture;
-
+        let counter = 0;
         setInterval(() => {
-            if (this.previousPos > 6000) {
-                this.decorTexture.dispose();
-                this.decorTexture = purpleTexture;
+            switch (counter) {
+                case 0:
+                    this.decorTexture = palmTreeTexture1;
+                    break;
+                case 1:
+                    this.decorTexture = palmTreeTexture2;
+                    break;
+                case 2:
+                    this.decorTexture = palmTreeTexture3;
+                    break;
             }
-            else if (this.previousPos > 4000) {
-                this.decorTexture.dispose();
-                this.decorTexture = blueTexture;
-            }
-            else if (this.previousPos > 2000) {
-                this.decorTexture.dispose();
-                this.decorTexture = greyTexture;
-            }
-        }, 5000)
+            counter = (counter + 1) % 3;
+        }, 1 / 60)
     }
+    _initDraw() {
+        for (let i = 0; i < this.instancesNeeded * 2; i++) {
+
+            const side = i >= this.instancesNeeded ? -1 : 1;
+
+            const newDecor = this._createDecor();
+            newDecor.position.x = this.xPosition * side;
+            newDecor.position.z = (i % this.instancesNeeded) * this.decorOffset;
+
+            this.allDecors.push(newDecor);
+            this.scene.add(newDecor);
+        }
+    }
+    _createRow() {
+        const lastDecor = this.allDecors.findLast(a => a);
+        const nextPositionZ = lastDecor.position.z + this.decorOffset;
+
+        const nextDecorLeft = this._createDecor();
+        nextDecorLeft.position.x = -this.xPosition;
+        nextDecorLeft.position.z = nextPositionZ;
+
+        const nextDecorRight = this._createDecor();
+        nextDecorRight.position.x = this.xPosition;
+        nextDecorRight.position.z = nextPositionZ;
+
+        this.scene.add(nextDecorLeft, nextDecorRight);
+        this.allDecors.push(nextDecorLeft, nextDecorRight);
+    }
+
 }
