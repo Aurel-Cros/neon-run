@@ -5,9 +5,14 @@ export class GameOver {
   }
 
   _makeOverlay() {
+    document.body.replaceChildren();
+    const gameWrapper = document.createElement("div");
+    gameWrapper.className = "game-wrapper";
+    document.body.appendChild(gameWrapper);
+
     const gameOverWrapper = document.createElement("div");
     gameOverWrapper.id = "gameOverWrapper";
-    document.querySelector(".game-wrapper").appendChild(gameOverWrapper);
+    gameWrapper.appendChild(gameOverWrapper);
 
     const gameOverText = document.createElement("h1");
     gameOverText.id = "gameOverText";

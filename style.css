@@ -37,6 +37,7 @@ canvas {
     transition: opacity 5s linear;
 }
 .start-button {
+    cursor: pointer;
     width: 5.8125rem;
     height: 1.5625rem;
     background-image: url('./assets/menu/startbouton.png');
@@ -110,10 +111,6 @@ canvas {
 }
 #gameOverWrapper {
     box-sizing: border-box;
-    position: absolute;
-    top: 40vh;
-    left: 20vw;
-    z-index: 200;
     display: flex;
     flex-direction: column;
     align-items: center;
