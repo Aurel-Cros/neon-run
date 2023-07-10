@@ -4,11 +4,12 @@ import { Obstacle } from './Obstacle';
 import { AudioHandler } from './Audio';
 import { HUD } from './HUD';
 import { GameOver } from './GameOver';
+import { Trees, Rails } from './Decor';
 
 export class Game {
     // General flow values
     speedZ = 60;
-    speedRatio = 1.25;
+    speedRatio = 1.35;
     carSize = 2;
     wayWidth = 5;
 
@@ -20,22 +21,20 @@ export class Game {
 
     // Obstacle values
     obstacles = [];
-    obstacleChance = 0.1;
+    obstacleChance = 0.2;
     obstacleChanceGrowRate = 1.15;
     maxObstacleSpeedRatio = 0.01;
-    collisionGracePeriod = 1.33;
+    collisionGracePeriod = 1.5;
     lastCollision = false;
 
     constructor(scene, camera, gameWrapper) {
-        // Init variables
-        // Set 3D scene
-        // bind event callbacks
         this.scene = scene;
+        this.decor = {};
+        this.car = new Car(this.carSize, this.audio);
+        this._initScene(scene, camera);
         this.camera = camera;
         this.wrapper = gameWrapper;
         this.audio = new AudioHandler(camera);
-        this.car = new Car(this.carSize, this.audio);
-        this._initScene(scene, camera);
         this.HUD = new HUD(this.healthPts);
 
         this.audio.startGame();
@@ -83,10 +82,11 @@ export class Game {
     _updateGrid() {
         // Move grid to simulate movement
         this.grid.material.uniforms.time.value = this.time * this.speedRatio;
+        this.decor.rails.moveDecor(this.time);
     }
 
     _updateBackground() {
-        this.backgroundSprite.position.y += (this.time / 1500);
+        this.backgroundSprite.position.y += (this.time / 2000);
     }
 
     _checkCollisions() {
@@ -174,22 +174,28 @@ export class Game {
 
     _initScene(scene, camera) {
         this._createGrid(scene);
+        this._createDecor(scene);
 
         const material = new THREE.SpriteMaterial({
-            map: new THREE.TextureLoader().load('/assets/background.png'),
+            map: new THREE.TextureLoader().load('../assets/background.png'),
             color: 0xffffff
         });
         this.backgroundSprite = new THREE.Sprite(material);
         this.backgroundSprite.scale.set(500, 281);
         this.backgroundSprite.position.z = -150;
         this.backgroundSprite.position.y = -30;
-
         scene.add(this.backgroundSprite);
+
 
         scene.add(this.car.body);
         this.car.body.position.y = 1;
         camera.rotateX(-5 * Math.PI / 180);
         camera.position.set(0, 4, 6);
+    }
+
+    _createDecor(scene) {
+        this.decor.rails = new Rails(scene);
+        this.decor.trees = new Trees(scene);
     }
 
     _createGrid(scene) {
@@ -252,9 +258,8 @@ export class Game {
         const geometry = new THREE.PlaneGeometry(500, 250);
         const material = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
         const plane = new THREE.Mesh(geometry, material);
-        plane.position.y = -1;
-        plane.position.z = -20;
-        plane.rotateX(80.11);
+        plane.position.y = -0.1;
+        plane.rotateX(Math.PI / 180 * 90);
         scene.add(plane);
 
         this.time = 0;
