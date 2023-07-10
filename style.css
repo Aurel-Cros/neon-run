@@ -27,26 +27,78 @@ body {
 canvas {
     aspect-ratio: 4/3;
 }
-.start-menu {
-    text-align: center;
-}
 .game-wrapper {
     position: relative;
     max-width: 100vw;
     opacity: 1;
     transition: opacity 5s linear;
 }
-.start-button {
-    cursor: pointer;
-    width: 5.8125rem;
-    height: 1.5625rem;
-    background-image: url('./assets/menu/startbouton.png');
+
+.start-menu {
+    display: flex;
+    box-sizing: border-box;
+    height: 100%;
+  
+    padding: 0;
+    margin: 0;
+    background-image: url("/assets/menu/starting-screen.png");
     background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: contain;
+    background-position: center;
+  } 
+  .start-button {
+    cursor: pointer;
+    border-radius: 5px ;
     border: none;
+    outline: none;
+    background-image: url("/assets/menu/startbouton.png");
     background-color: transparent;
-}
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0;
+  }
+  
+  /* cover 4/3 */
+  .start-menu {
+    aspect-ratio: 4/3;
+  
+    background-size: cover;
+  }
+  .start-button {
+    width: 11.4%;
+    height: 4%;
+    margin: 64.47%  44% 0 auto;
+  }
+  
+  /* contain 4/3 */
+  /* .start-menu {
+    aspect-ratio: 4/3;
+  
+    background-size: contain;
+  }
+  .start-button {
+    width: 8.7%;
+    height: 3.2%;
+    margin: 57.7% 45.5% 0 auto;
+  } */
+  
+  /* 16/9 */
+  /* .start-menu {
+    aspect-ratio: 16/9;
+  
+    background-size: cover;
+  }
+  .start-button {
+    width: 8.6%;
+    height: 4.2%;
+    margin: 48.3% 45.5% 0 auto;
+  } */
+  
+  
+  .start-button:hover {
+    filter: contrast(160%);
+    border: outset rgb(90, 255, 233, 0.5) 4px;
+  }
+
 #hud {
     display: flex;
     position: absolute;
