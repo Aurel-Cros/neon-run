@@ -1,8 +1,26 @@
 import * as THREE from 'three';
 import { Game } from './components/Game';
+const initScreen = () => {
+    const gameWrapper = document.createElement("div");
+    gameWrapper.className = "game-wrapper";
+
+    const loadingMenu = document.createElement("div");
+    loadingMenu.className = "start-menu";
+
+    const startButton = document.createElement("button"); startButton.className = "start-button";
+
+    startButton.addEventListener('click', function () {
+        loadingMenu.remove();
+        startGame();
+    });
+    loadingMenu.appendChild(startButton);
+    gameWrapper.appendChild(loadingMenu);
+    document.body.appendChild(gameWrapper);
+}
+
+initScreen();
+
 const gameWrapper = document.querySelector(".game-wrapper");
-const loadingMenu = document.querySelector('.loading-menu');
-const startButton = document.querySelector('.start-button');
 
 const startGame = () => {
     const scene = new THREE.Scene();
@@ -27,23 +45,3 @@ const startGame = () => {
     }
     animate();
 }
-
-startButton.addEventListener('click', function () {
-    loadingMenu.remove();
-    startGame();
-
-});
-
-// retryButton.addEventListener('click', function () {
-//     document.body.replaceChildren();
-//     startGame();
-// });
-
-// // vers la div game over
-// function displayGameOver() {
-//     document.body.replaceChildren(gameOver);
-// }
-
-// quitButton.addEventListener('click', function () {
-//     document.body.replaceChildren(loadingMenu);
-// });

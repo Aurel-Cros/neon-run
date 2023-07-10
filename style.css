@@ -2,21 +2,20 @@
     font-family: "Orbitron";
     font-display: swap;
     src: local("Orbitron"),
-      url("assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
-  }
-  @font-face {
+        url("assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
+}
+@font-face {
     font-family: "Rocket Rinder";
     font-display: swap;
     src: local("Rocket Rinder"),
-      url("/assets/fonts/Rocket-Rinder.otf") format("opentype");
-  }
-  
-  body,
-  canvas {
+        url("/assets/fonts/Rocket-Rinder.otf") format("opentype");
+}
+body,
+canvas {
     margin: 0;
     max-width: 100vw;
-  }
-  body {
+}
+body {
     background-color: black;
     font-family: "Orbitron", sans-serif;
     color: #fff;
@@ -24,20 +23,30 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-  }
-  canvas {
+}
+canvas {
     aspect-ratio: 4/3;
-  }
-  .loading-menu {
+}
+.start-menu {
     text-align: center;
-  }
-  .game-wrapper {
+}
+.game-wrapper {
     position: relative;
     max-width: 100vw;
     opacity: 1;
     transition: opacity 5s linear;
-  }
-  #hud {
+}
+.start-button {
+    width: 5.8125rem;
+    height: 1.5625rem;
+    background-image: url('./assets/menu/startbouton.png');
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: contain;
+    border: none;
+    background-color: transparent;
+}
+#hud {
     display: flex;
     position: absolute;
     box-sizing: border-box;
@@ -45,32 +54,32 @@
     width: 100%;
     z-index: 1;
     padding: 20px;
-  }
-  #heartsWrapper {
+}
+#heartsWrapper {
     display: flex;
     gap: 12px;
     align-items: center;
-  }
-  .heart {
+}
+.heart {
     background-image: url("assets/hud/PVPlein.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     width: 40px;
     height: 40px;
-  }
-  .heart.lost {
+}
+.heart.lost {
     background-image: url("assets/hud/PVvide.png");
-  }
-  #timer {
+}
+#timer {
     margin: 0 0 0 auto;
     padding: 0;
     font-size: 32px;
     font-weight: 600;
     color: #fff;
     text-shadow: 1px 1px 4px rgb(150, 22, 255);
-  }
-  #credits {
+}
+#credits {
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -81,26 +90,25 @@
     align-items: center;
     gap: 24px;
     text-align: center;
-  }
-  #credits h1 {
+}
+#credits h1 {
     font-size: 52px;
     text-shadow: 2px 2px 4px rgb(255, 151, 241);
-  }
-  #credits .wrapper {
+}
+#credits .wrapper {
     margin-bottom: 40px;
-  }
-  #credits h2 {
+}
+#credits h2 {
     font-size: 40px;
     margin-top: 0;
     text-shadow: 1px 1px 4px rgb(215, 166, 255);
-  }
-  #credits p {
+}
+#credits p {
     font-size: 28px;
     margin: 8px;
     text-shadow: 1px 1px 4px rgb(165, 242, 255);
-  }
-  
-  #gameOverWrapper {
+}
+#gameOverWrapper {
     box-sizing: border-box;
     position: absolute;
     top: 40vh;
@@ -108,63 +116,55 @@
     z-index: 200;
     display: flex;
     flex-direction: column;
-  
     align-items: center;
-  }
-  
-  #gameOverText,
-  #gameOverTextShadow {
+}
+#gameOverText,
+#gameOverTextShadow {
     margin: 0;
     padding: 0;
     font-family: "Rocket Rinder";
     font-weight: 700;
     font-size: 80px;
-  }
-  #gameOverText {
+}
+#gameOverText {
     color: transparent;
     background-image: linear-gradient(to bottom, #b41484, #ffa5ac);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-stroke: #8bfbff 0.5px;
-  }
-  
-  #gameOverTextShadow {
+}
+#gameOverTextShadow {
     position: absolute;
     z-index: -1;
     text-shadow: -1px -1px 24px #5affe9;
-  }
-  
-  #gameOverWrapper .buttonWrapper {
+}
+#gameOverWrapper .buttonWrapper {
     box-sizing: border-box;
     display: flex;
     width: 100%;
-  
     padding: 0 32px;
     margin-top: 64px;
-  }
-  
-  #gameOverWrapper button {
+}
+#gameOverWrapper button {
     border: solid #fff 2px;
     border-radius: 8px;
     padding: 8px 16px;
     outline: none;
     background-color: #b41484;
-  
     color: #fff;
     font-family: "Orbitron";
     font-size: 32px;
-  }
-  #gameOverWrapper button:hover {
+}
+#gameOverWrapper button:hover {
     cursor: pointer;
     box-shadow: -1px -1px 24px #5affe9;
     text-shadow: -1px -1px 24px #5affe9;
     color: #ebfffc;
     border: solid #5affe9 2px;
-  }
-  #retryButton {
+}
+#retryButton {
     margin: 0 auto 0 0;
-  }
-  #quitButton {
+}
+#quitButton {
     margin: 0 0 0 auto;
-  }
-  
+}
