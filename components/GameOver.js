@@ -1,3 +1,5 @@
+import { startGame } from "../functions/startGame";
+
 export class GameOver {
   constructor() {
     this._makeOverlay();

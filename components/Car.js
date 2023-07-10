@@ -12,7 +12,6 @@ export class Car {
 		this._createCar(carSize);
 		this._initIdleAnimation();
 		this._initListeners();
-		this.AnimationGameOver();
 	}
 	_clearIdle() {
 		clearInterval(this.currentIdle);
@@ -48,7 +47,7 @@ export class Car {
 			crash10: new THREE.TextureLoader().load("/assets/car/Crash10.png"),
 
 			gameOver: new THREE.TextureLoader().load("/assets/car/GameOver.png"),
-			gameOver1: new THREE.TextureLoader().load("/assets/car/GameOver1.png"), 
+			gameOver1: new THREE.TextureLoader().load("/assets/car/GameOver1.png"),
 			gameOver3: new THREE.TextureLoader().load("/assets/car/GameOver3.png"),
 			gameOver4: new THREE.TextureLoader().load("/assets/car/GameOver4.png"),
 			gameOver5: new THREE.TextureLoader().load("/assets/car/GameOver5.png"),
@@ -86,17 +85,17 @@ export class Car {
 		this.currentIdle = setInterval(() => {
 			this.sprite.material.map = idleFrames[currentIdleFrame];
 			currentIdleFrame = (currentIdleFrame + 1) % 2;
-		}, this.animationSpeed /4);
+		}, this.animationSpeed / 4);
 	}
 
 	AnimationGameOver() {
 		//  animation déclanché par l'événement gameover
-		
+
 		this._clearIdle();
-		this.isGameOver = true ; 
+		this.isGameOver = true;
 
 		// Animation lors d'un game over, game over quand point de vie tombe à 0
-		
+
 		const animationFrames = [
 			this.textures.gameOver,
 			this.textures.gameOver1,
@@ -118,28 +117,28 @@ export class Car {
 		];
 		// Avant que l'animation se commence il faudrait que la grille arrete de bouger 
 		// car les sprite sont sur une voiture la voiture à l'arrêt. donc faire stopper la ligne en commentaire ci-dessous puis enclancher l'animation
-			// _updateGrid() {
-					// Move grid to simulate movement
-					// this.grid.material.uniforms.time.value = this.time;
-				// }
+		// _updateGrid() {
+		// Move grid to simulate movement
+		// this.grid.material.uniforms.time.value = this.time;
+		// }
 
-		let frameIndex = 0 ;
+		let frameIndex = 0;
 
 		const gameOverInterval = setInterval(() => {
 			this.sprite.material.map = animationFrames[frameIndex];
 			frameIndex += 1;
 			if (frameIndex >= animationFrames.length) {
 				clearInterval(gameOverInterval);
-				this._clearIdle() ; 
-				this.isCrashing = false; 
+				this._clearIdle();
+				this.isCrashing = false;
 				return;
 			}
 		},
 			this.animationSpeed / animationFrames.length * 17
 			// diviser par 17 car il ya 17 frames
 		);
-		
-			
+
+
 
 	}
 
