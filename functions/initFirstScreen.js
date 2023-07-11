@@ -15,5 +15,4 @@ export const initFirstScreen = () => {
     loadingMenu.appendChild(startButton);
     gameWrapper.appendChild(loadingMenu);
     document.body.appendChild(gameWrapper);
-    startButton.dispatchEvent(new Event('click'));
 }
