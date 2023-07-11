@@ -40,6 +40,11 @@ export class Game {
         this.HUD = new HUD(this.healthPts);
 
         this.audio.startGame();
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowUp")
+                this.time = 99
+        })
     }
 
     _generateObstacles() {
@@ -161,7 +166,7 @@ export class Game {
         this.car.body.position.z -= 0.01
         const startTime = this.time;
         const awayInterval = setInterval(() => {
-            this.car.body.position.z *= 1.05;
+            this.car.body.position.z -= 0.5;
             if (this.time > (startTime + 5))
                 clearInterval(awayInterval);
         }, 0.1)
