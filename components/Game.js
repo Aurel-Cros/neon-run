@@ -3,10 +3,14 @@ import { Car } from './Car';
 import { Obstacle } from './Obstacle';
 import { AudioHandler } from './Audio';
 import { HUD } from './HUD';
+import { GameOver } from './GameOver';
+import { Trees, Rails } from './Decor';
+import { Credits } from './credits';
 
 export class Game {
     // General flow values
     speedZ = 60;
+    speedRatio = 1.35;
     carSize = 2;
     wayWidth = 5;
 
@@ -14,26 +18,25 @@ export class Game {
     gameWon = false;
     running = true;
     healthPts = 3;
-    timeToWin = 180; // Time in seconds
+    timeToWin = 100; // Time in seconds
 
     // Obstacle values
     obstacles = [];
-    obstacleChance = 0.1;
+    obstacleChance = 0.2;
     obstacleChanceGrowRate = 1.15;
     maxObstacleSpeedRatio = 0.01;
-    collisionGracePeriod = 2.5;
+    collisionGracePeriod = 1.5;
     lastCollision = false;
 
     constructor(scene, camera, gameWrapper) {
-        // Init variables
-        // Set 3D scene
-        // bind event callbacks
         this.scene = scene;
-        this.camera = camera;
-        this.wrapper = gameWrapper;
+        this.decor = {};
         this.audio = new AudioHandler(camera);
         this.car = new Car(this.carSize, this.audio);
         this._initScene(scene, camera);
+
+        this.camera = camera;
+        this.wrapper = gameWrapper;
         this.HUD = new HUD(this.healthPts);
 
         this.audio.startGame();
@@ -42,7 +45,7 @@ export class Game {
     _generateObstacles() {
         if (this.gameWon)
             return;
-        const doesGenerate = Math.random() < this.obstacleChance;
+        const doesGenerate = Math.random() < (this.obstacleChance * (1 + this.time / 90));
         if (doesGenerate) {
             this.obstacleChance = 0.0001;
             this._createObstacle();
@@ -53,7 +56,7 @@ export class Game {
     }
 
     _createObstacle() {
-        const obstacleInstance = new Obstacle(this.wayWidth, this.speedZ, this.maxObstacleSpeedRatio);
+        const obstacleInstance = new Obstacle(this.wayWidth, this.speedZ, (this.time / 10000) + this.maxObstacleSpeedRatio);
         this.obstacles.push(obstacleInstance);
 
         this.scene.add(obstacleInstance)
@@ -70,6 +73,7 @@ export class Game {
             const tick = (this.clock.getDelta() * Math.min((this.time * 3.33), 1))
             this.time += tick || 0.0001;
             this._updateGrid();
+            this._updateBackground();
             this._checkCollisions();
             this._generateObstacles();
             this._updateObstaclesPosition();
@@ -79,12 +83,19 @@ export class Game {
 
     _updateGrid() {
         // Move grid to simulate movement
-        this.grid.material.uniforms.time.value = this.time;
+        this.grid.material.uniforms.time.value = this.time * this.speedRatio;
+        this.decor.rails.moveDecor(this.time);
+        this.decor.trees.moveDecor(this.time);
+    }
+
+    _updateBackground() {
+        this.backgroundSprite.position.y += (this.time / 2000);
     }
 
     _checkCollisions() {
-        if (this.lastCollision === false ||
-            this.time - this.lastCollision > this.collisionGracePeriod) {
+        if (this.gameWon !== true &&
+            (this.lastCollision === false ||
+                this.time - this.lastCollision > this.collisionGracePeriod)) {
             const width = this.carSize;
             // Check if player hit an obstacle / a bonus...
             this.obstacles.forEach(obstacle => {
@@ -120,47 +131,94 @@ export class Game {
 
     _gameLost() {
         this.running = false;
-        console.log("You loooose !");
         this.audio.loseGame();
         this.HUD.timeStop();
         this.car.AnimationGameOver();
+        setTimeout(() => { this._fadeOutCamera() }, 2000);
+        setTimeout(() => { this._deleteInstance() }, 7000);
     }
     _gameWon() {
         this.gameWon = true;
-        console.log("You win !");
         this.audio.winGame();
         this.obstacles.forEach(obstacle => {
             obstacle.removeFromParent();
         })
-        this.obstacles = [];
-        this.HUD.timeStop();
         this._panCameraAway();
-        setTimeout(() => { this._deleteInstance() }, 5000);
+        this._fadeOutCamera();
+        setTimeout(() => {
+            this.HUD.timeStop();
+            this._deleteInstance();
+        }, 5000);
     }
 
+    _fadeOutCamera() {
+        this.wrapper.style.opacity = 0;
+    }
+
+    _panCameraAway() {
+        this.car.body.position.z -= 0.01
+        const startTime = this.time;
+        const awayInterval = setInterval(() => {
+            this.car.body.position.z *= 1.05;
+            if (this.time > (startTime + 5))
+                clearInterval(awayInterval);
+        }, 0.1)
+    }
+
+    _freeMemoryAll() {
+        this.car.freeMemory();
+        for (const decor in this.decor) {
+            this.decor[decor].freeMemory();
+        }
+        this.obstacles.forEach(obstacle => {
+            obstacle.freeMemory();
+        })
+        this.plane.material.dispose();
+        this.plane.geometry.dispose();
+        this.grid.material.dispose();
+        this.grid.geometry.dispose();
+        this.backgroundSprite.material.map.dispose();
+        this.backgroundSprite.material.dispose();
+        this.backgroundSprite.geometry.dispose();
+    }
     _deleteInstance() {
+        this._freeMemoryAll();
         this.wrapper.replaceChildren();
         this.stop = true;
+        if (this.gameWon) {
+            // Display win screen
+            new Credits();
+        }
+        else {
+            // Display lose screen
+            new GameOver();
+        }
     }
 
     _initScene(scene, camera) {
         this._createGrid(scene);
+        this._createDecor(scene);
 
         const material = new THREE.SpriteMaterial({
-            map: new THREE.TextureLoader().load('/assets/background.png'),
+            map: new THREE.TextureLoader().load('../assets/background.png'),
             color: 0xffffff
         });
-        const backgroundSprite = new THREE.Sprite(material);
-        backgroundSprite.scale.set(500, 281);
-        backgroundSprite.position.z = -150;
-        backgroundSprite.position.y = 0;
+        this.backgroundSprite = new THREE.Sprite(material);
+        this.backgroundSprite.scale.set(500, 281);
+        this.backgroundSprite.position.z = -150;
+        this.backgroundSprite.position.y = -30;
+        scene.add(this.backgroundSprite);
 
-        scene.add(backgroundSprite);
 
         scene.add(this.car.body);
         this.car.body.position.y = 1;
         camera.rotateX(-5 * Math.PI / 180);
         camera.position.set(0, 4, 6);
+    }
+
+    _createDecor(scene) {
+        this.decor.rails = new Rails(scene);
+        this.decor.trees = new Trees(scene);
     }
 
     _createGrid(scene) {
@@ -222,26 +280,12 @@ export class Game {
 
         const geometry = new THREE.PlaneGeometry(500, 250);
         const material = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
-        const plane = new THREE.Mesh(geometry, material);
-        plane.position.y = -1;
-        plane.position.z = -20;
-        plane.rotateX(80.11);
-        scene.add(plane);
+        this.plane = new THREE.Mesh(geometry, material);
+        this.plane.position.y = -0.1;
+        this.plane.rotateX(Math.PI / 180 * 90);
+        scene.add(this.plane);
 
         this.time = 0;
         this.clock = new THREE.Clock();
-    }
-
-    _panCameraAway() {
-        console.log("Pan away")
-        this.wrapper.style.opacity = 0;
-        this.car.body.position.z -= 0.01
-        const startTime = this.time;
-        const awayInterval = setInterval(() => {
-            this.car.body.position.z *= 1.05;
-            console.log(this.time, startTime, this.time > (startTime + 5));
-            if (this.time > (startTime + 5))
-                clearInterval(awayInterval);
-        }, 0.1)
     }
 }

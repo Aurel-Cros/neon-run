@@ -12,7 +12,6 @@ export class Car {
 		this._createCar(carSize);
 		this._initIdleAnimation();
 		this._initListeners();
-		
 	}
 	_clearIdle() {
 		clearInterval(this.currentIdle);
@@ -47,9 +46,8 @@ export class Car {
 			crash9: new THREE.TextureLoader().load("/assets/car/Crash9.png"),
 			crash10: new THREE.TextureLoader().load("/assets/car/Crash10.png"),
 
-			gameOver0: new THREE.TextureLoader().load("/assets/car/GameOver.png"),
-			gameOver1: new THREE.TextureLoader().load("/assets/car/GameOver1.png"), 
-			gameOver2: new THREE.TextureLoader().load("/assets/car/GameOver2.png"),
+			gameOver: new THREE.TextureLoader().load("/assets/car/GameOver.png"),
+			gameOver1: new THREE.TextureLoader().load("/assets/car/GameOver1.png"),
 			gameOver3: new THREE.TextureLoader().load("/assets/car/GameOver3.png"),
 			gameOver4: new THREE.TextureLoader().load("/assets/car/GameOver4.png"),
 			gameOver5: new THREE.TextureLoader().load("/assets/car/GameOver5.png"),
@@ -87,21 +85,20 @@ export class Car {
 		this.currentIdle = setInterval(() => {
 			this.sprite.material.map = idleFrames[currentIdleFrame];
 			currentIdleFrame = (currentIdleFrame + 1) % 2;
-		}, this.animationSpeed /4);
+		}, this.animationSpeed / 4);
 	}
 
 	AnimationGameOver() {
 		//  animation déclanché par l'événement gameover
-		
+
 		this._clearIdle();
-		this.isGameOver = true ; 
+		this.isGameOver = true;
 
 		// Animation lors d'un game over, game over quand point de vie tombe à 0
-		
+
 		const animationFrames = [
-			this.textures.gameOver0,
+			this.textures.gameOver,
 			this.textures.gameOver1,
-			this.textures.gameOver2,
 			this.textures.gameOver3,
 			this.textures.gameOver4,
 			this.textures.gameOver5,
@@ -116,33 +113,23 @@ export class Car {
 			this.textures.gameOver14,
 			this.textures.gameOver15,
 			this.textures.gameOver16,
-			this.textures.gameOver0,
+			this.textures.gameOver,
 		];
-		// Avant que l'animation se commence il faudrait que la grille arrete de bouger 
-		// car les sprite sont sur une voiture la voiture à l'arrêt. donc faire stopper la ligne en commentaire ci-dessous puis enclancher l'animation
-			// _updateGrid() {
-					// Move grid to simulate movement
-					// this.grid.material.uniforms.time.value = this.time;
-				// }
 
-		let frameIndex = 0 ;
+		let frameIndex = 0;
 
 		const gameOverInterval = setInterval(() => {
 			this.sprite.material.map = animationFrames[frameIndex];
 			frameIndex += 1;
 			if (frameIndex >= animationFrames.length) {
 				clearInterval(gameOverInterval);
-				this._clearIdle() ; 
-				this.isCrashing = false; 
+				this._clearIdle();
+				this.isCrashing = false;
 				return;
 			}
 		},
-			this.animationSpeed / animationFrames.length * 18
-			// diviser par 18 car il ya 18 frames
+			this.animationSpeed
 		);
-		
-			
-
 	}
 
 	AnimationCrash() {
@@ -174,7 +161,7 @@ export class Car {
 				return;
 			}
 		},
-			this.animationSpeed / animationFrames.length * 10
+			this.animationSpeed
 		);
 	}
 
@@ -270,7 +257,7 @@ export class Car {
 
 	_initListeners() {
 		document.addEventListener("keydown", (event) => {
-			if (this.isTurning) return;
+			if (this.isTurning || this.isGameOver) return;
 
 			if (event.code === "ArrowLeft") {
 				if (this.body.position.x > -1) {
@@ -306,9 +293,7 @@ export class Car {
 	}
 
 	_createCar(carSize) {
-		const texture = new THREE.TextureLoader().load(
-			"/assets/car/car_front1.png"
-		);
+		const texture = this.textures.front1;
 		const material = new THREE.SpriteMaterial({ map: texture });
 		const sprite = new THREE.Sprite(material);
 		sprite.scale.set(3, 3);
@@ -326,9 +311,19 @@ export class Car {
 		// body correspond a la voiture
 		this.body = new THREE.Group();
 		this.body.add(carBody, sprite);
+		this.mesh = carBody;
 		this.sprite = sprite;
 	}
+	freeMemory() {
+		this.sprite.material.map.dispose();
+		this.sprite.material.dispose();
+		this.mesh.material.dispose();
+		this.mesh.geometry.dispose();
 
+		for (const texture in this.textures) {
+			this.textures[texture].dispose();
+		}
+	}
 	_animationTurn(facteurDirection) {
 		this._clearIdle();
 		//Reccupère la position de la voiture, et en fonction de sa postion déclanche le changement de sprite centre -> gauche

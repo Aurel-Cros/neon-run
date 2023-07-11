@@ -1,94 +1,229 @@
 @font-face {
-    font-family: "Orbitron";
-    font-display: swap;
-    src: local("Orbitron"),
-        url("assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
+  font-family: "Orbitron";
+  font-display: swap;
+  src: local("Orbitron"),
+    url("assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rocket Rinder";
+  font-display: swap;
+  src: local("Rocket Rinder"),
+    url("/assets/fonts/Rocket-Rinder.otf") format("opentype");
 }
 body,
 canvas {
-    margin: 0;
-    max-width: 100vw;
+  margin: 0;
+  max-width: 100vw;
 }
 body {
-    background-color: black;
-    font-family: "Orbitron", sans-serif;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  background-color: black;
+  font-family: "Orbitron", sans-serif;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 canvas {
-    aspect-ratio: 4/3;
-}
-.loading-menu {
-    text-align: center
+  aspect-ratio: 4/3;
 }
 .game-wrapper {
-    position: relative;
-    max-width: 100vw;
-    opacity: 1;
-    transition: opacity 5s linear;
+  position: relative;
+  max-width: 100vw;
+  opacity: 1;
+  transition: opacity 5s linear;
+}
+.start-menu {
+  display: flex;
+  box-sizing: border-box;
+  height: 900px;
+  padding: 0;
+  margin: 0;
+  background-image: url("/assets/menu/starting-screen.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.start-button {
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  background-image: url("/assets/menu/startbouton.png");
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0;
+}
+/* cover 4/3 */
+.start-menu {
+  aspect-ratio: 4/3;
+  background-size: cover;
+}
+.start-button {
+  width: 11.4%;
+  height: 4%;
+  margin: 64.47% 44% 0 auto;
+}
+/* contain 4/3 */
+/* .start-menu {
+    aspect-ratio: 4/3;
+  
+    background-size: contain;
+  }
+  .start-button {
+    width: 8.7%;
+    height: 3.2%;
+    margin: 57.7% 45.5% 0 auto;
+  } */
+/* 16/9 */
+/* .start-menu {
+    aspect-ratio: 16/9;
+  
+    background-size: cover;
+  }
+  .start-button {
+    width: 8.6%;
+    height: 4.2%;
+    margin: 48.3% 45.5% 0 auto;
+  } */
+.start-button:hover {
+  filter: contrast(160%);
+  border: outset rgb(90, 255, 233, 0.5) 4px;
 }
 #hud {
-    display: flex;
-    position: absolute;
-    box-sizing: border-box;
-    top: 0px;
-    width: 100%;
-    z-index: 1;
-    padding: 20px;
+  display: flex;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0px;
+  width: 100%;
+  z-index: 1;
+  padding: 20px;
 }
 #heartsWrapper {
-    display: flex;
-    gap: 12px;
-    align-items: center;
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 .heart {
-    background-image: url("assets/hud/PVPlein.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 40px;
-    height: 40px;
+  background-image: url("assets/hud/PVPlein.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 40px;
+  height: 40px;
 }
 .heart.lost {
-    background-image: url("assets/hud/PVvide.png");
+  background-image: url("assets/hud/PVvide.png");
 }
 #timer {
-    margin: 0 0 0 auto;
-    padding: 0;
-    font-size: 32px;
-    font-weight: 600;
-    color: #fff;
-    text-shadow: 1px 1px 4px rgb(150, 22, 255);
+  margin: 0 0 0 auto;
+  padding: 0;
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgb(150, 22, 255);
 }
 #credits {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    box-sizing: border-box;
-    z-index: 200;
-    width: 100vw;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 0%;
+  transform: translateY(100%);
+  box-sizing: border-box;
+  z-index: 200;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
 }
 #credits h1 {
-    font-size: 52px;
-    text-shadow: 2px 2px 4px rgb(255, 151, 241);
+  font-size: 52px;
+  text-shadow: 2px 2px 4px rgb(255, 151, 241);
 }
 #credits .wrapper {
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 #credits h2 {
-    font-size: 40px;
-    margin-top: 0;
-    text-shadow: 1px 1px 4px rgb(215, 166, 255);
+  font-size: 40px;
+  margin-top: 0;
+  text-shadow: 1px 1px 4px rgb(215, 166, 255);
 }
 #credits p {
-    font-size: 28px;
-    margin: 8px;
-    text-shadow: 1px 1px 4px rgb(165, 242, 255);
+  font-size: 28px;
+  margin: 8px;
+  text-shadow: 1px 1px 4px rgb(165, 242, 255);
+}
+#gameOverWrapper {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+#gameOverText,
+#gameOverTextShadow {
+  margin: 0;
+  padding: 0;
+  font-family: "Rocket Rinder";
+  font-weight: 700;
+  font-size: 80px;
+}
+#gameOverText {
+  color: transparent;
+  background-image: linear-gradient(to bottom, #b41484, #ffa5ac);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: #8bfbff 2px;
+  position: relative;
+}
+#gameOverTextShadow {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  text-shadow: -1px -1px 24px #5affe9;
+}
+#gameOverWrapper .buttonWrapper {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  padding: 0 32px;
+  margin-top: 64px;
+}
+#gameOverWrapper button {
+  border: solid #fff 2px;
+  border-radius: 8px;
+  padding: 8px 16px;
+  outline: none;
+  background-color: #b41484;
+  color: #fff;
+  font-family: "Orbitron";
+  font-size: 32px;
+}
+#gameOverWrapper button:hover {
+  cursor: pointer;
+  box-shadow: -1px -1px 24px #5affe9;
+  text-shadow: -1px -1px 24px #5affe9;
+  color: #ebfffc;
+  border: solid #5affe9 2px;
+}
+#retryButton:not(.replay-btn) {
+  margin: 0 auto 0 0;
+}
+.replay-btn {
+  margin-top: 1rem;
+}
+#quitButton {
+  margin: 0 0 0 auto;
 }

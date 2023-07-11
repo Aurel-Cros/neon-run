@@ -48,7 +48,7 @@ export class Obstacle {
         const hitBox = new THREE.Mesh(
             new THREE.BoxGeometry(1, 1, 1),
             new THREE.MeshBasicMaterial({
-                color: 0xaa5566,
+                color: 0xffffff,
                 transparent: true,
                 opacity: 0,
             })
@@ -59,6 +59,13 @@ export class Obstacle {
 
         this.bundle.updatePosition = () => {
             this.bundle.position.z += this.speedZ * this.movementSpeed
+        }
+        this.bundle.freeMemory = () => {
+            this.bundle.removeFromParent();
+            sprite.material.map.dispose();
+            sprite.material.dispose();
+            hitBox.geometry.dispose();
+            hitBox.material.dispose();
         }
         this.bundle.position.x = (randomId.way == 'left' ? -1 : (randomId.way == 'center' ? 0 : 1)) * (wayWidth * 1.2);
         this.bundle.position.y = 1;
