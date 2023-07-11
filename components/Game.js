@@ -5,6 +5,7 @@ import { AudioHandler } from './Audio';
 import { HUD } from './HUD';
 import { GameOver } from './GameOver';
 import { Trees, Rails } from './Decor';
+import { Credits } from './credits';
 
 export class Game {
     // General flow values
@@ -92,8 +93,9 @@ export class Game {
     }
 
     _checkCollisions() {
-        if (this.lastCollision === false ||
-            this.time - this.lastCollision > this.collisionGracePeriod) {
+        if (this.gameWon !== true &&
+            (this.lastCollision === false ||
+                this.time - this.lastCollision > this.collisionGracePeriod)) {
             const width = this.carSize;
             // Check if player hit an obstacle / a bonus...
             this.obstacles.forEach(obstacle => {
@@ -139,15 +141,14 @@ export class Game {
         this.gameWon = true;
         this.audio.winGame();
         this.obstacles.forEach(obstacle => {
-            obstacle.material.dispose();
-            obstacle.geometry.dispose();
             obstacle.removeFromParent();
         })
-        this.obstacles = [];
-        this.HUD.timeStop();
         this._panCameraAway();
         this._fadeOutCamera();
-        setTimeout(() => { this._deleteInstance() }, 5000);
+        setTimeout(() => {
+            this.HUD.timeStop();
+            this._deleteInstance();
+        }, 5000);
     }
 
     _fadeOutCamera() {
@@ -186,6 +187,7 @@ export class Game {
         this.stop = true;
         if (this.gameWon) {
             // Display win screen
+            new Credits();
         }
         else {
             // Display lose screen

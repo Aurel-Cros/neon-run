@@ -1,6 +1,8 @@
-class Credits {
+import { startGame } from "../functions/startGame";
+
+export class Credits {
   constructor() {
-    this.position = -730;
+    this.position = 0;
     this._makeCredits();
     this._rollCredits();
   }
@@ -14,22 +16,23 @@ class Credits {
       title: "Development",
       names: [
         "Aurélien Cros",
-        "Najima Guermoudi",
         "Evan Maljoku",
-        "Fabien Rousset",
         "Salomé Vauchier",
+        "Fabien Rousset",
+        "Najima Guermoudi"
       ],
     };
 
     const groups = [designers, developers];
 
-    const credits = document.createElement("div");
-    credits.id = "credits";
-    document.querySelector("body").appendChild(credits);
+    this.credits = document.createElement("div");
+    this.credits.id = "credits";
+    this.credits.style.bottom = "0px";
+    document.body.appendChild(this.credits);
 
     const mainTitle = document.createElement("h1");
     mainTitle.innerHTML = "Credits";
-    credits.appendChild(mainTitle);
+    this.credits.appendChild(mainTitle);
 
     for (let group of groups) {
       const wrapper = document.createElement("div");
@@ -42,17 +45,48 @@ class Credits {
         el.innerHTML = `${person}`;
         wrapper.appendChild(el);
       }
-      credits.appendChild(wrapper);
+      this.credits.appendChild(wrapper);
     }
   }
   _rollCredits() {
-    setInterval(() => {
-      if (this.position < 730) {
-        this.position += 1;
-        document.querySelector("#credits").style.bottom = `${this.position}px`;
+    const credits = setInterval(() => {
+      if (this.position < 100) {
+        this.position += 0.08;
+        this.credits.style.bottom = `${this.position}%`;
+        this.credits.style.transform = `translateY(${100 - this.position}%)`;
       } else {
-        clearInterval();
+        clearInterval(credits);
+        this._displayPlayAgain();
       }
     }, 10);
+  }
+
+  _displayPlayAgain() {
+    document.body.replaceChildren();
+
+    const gameWrapper = document.createElement("div");
+    gameWrapper.className = "game-wrapper";
+    document.body.appendChild(gameWrapper);
+
+    const gameOverWrapper = document.createElement("div");
+    gameOverWrapper.id = "gameOverWrapper";
+
+    const neonCityImage = document.createElement("img");
+    neonCityImage.src = "../assets/background/background/introReadMe.png";
+    neonCityImage.width = 985;
+    neonCityImage.height = 554;
+
+    const retryButton = document.createElement("button");
+    retryButton.id = "retryButton";
+    retryButton.className = "replay-btn";
+    retryButton.textContent = "Play again";
+
+    gameOverWrapper.append(neonCityImage, retryButton);
+    gameWrapper.appendChild(gameOverWrapper);
+
+    retryButton.addEventListener("click", () => {
+      gameWrapper.replaceChildren();
+      startGame();
+    });
   }
 }
