@@ -33,12 +33,10 @@ canvas {
   opacity: 1;
   transition: opacity 5s linear;
 }
-
 .start-menu {
   display: flex;
   box-sizing: border-box;
-  height: 100dvh;
-
+  height: 900px;
   padding: 0;
   margin: 0;
   background-image: url("/assets/menu/starting-screen.png");
@@ -56,11 +54,9 @@ canvas {
   background-size: cover;
   padding: 0;
 }
-
 /* cover 4/3 */
 .start-menu {
   aspect-ratio: 4/3;
-
   background-size: cover;
 }
 .start-button {
@@ -68,7 +64,6 @@ canvas {
   height: 4%;
   margin: 64.47% 44% 0 auto;
 }
-
 /* contain 4/3 */
 /* .start-menu {
     aspect-ratio: 4/3;
@@ -80,7 +75,6 @@ canvas {
     height: 3.2%;
     margin: 57.7% 45.5% 0 auto;
   } */
-
 /* 16/9 */
 /* .start-menu {
     aspect-ratio: 16/9;
@@ -92,12 +86,10 @@ canvas {
     height: 4.2%;
     margin: 48.3% 45.5% 0 auto;
   } */
-
 .start-button:hover {
   filter: contrast(160%);
   border: outset rgb(90, 255, 233, 0.5) 4px;
 }
-
 #hud {
   display: flex;
   position: absolute;
