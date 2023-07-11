@@ -2,13 +2,13 @@
   font-family: "Orbitron";
   font-display: swap;
   src: local("Orbitron"),
-    url("assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
+    url("./assets/fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
 }
 @font-face {
   font-family: "Rocket Rinder";
   font-display: swap;
   src: local("Rocket Rinder"),
-    url("/assets/fonts/Rocket-Rinder.otf") format("opentype");
+    url("./assets/fonts/Rocket-Rinder.otf") format("opentype");
 }
 body,
 canvas {
@@ -39,7 +39,7 @@ canvas {
   height: 900px;
   padding: 0;
   margin: 0;
-  background-image: url("/assets/menu/starting-screen.png");
+  background-image: url("./assets/menu/starting-screen.png");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -48,7 +48,7 @@ canvas {
   border-radius: 5px;
   border: none;
   outline: none;
-  background-image: url("/assets/menu/startbouton.png");
+  background-image: url("./assets/menu/startbouton.png");
   background-color: transparent;
   background-repeat: no-repeat;
   background-size: cover;
@@ -105,7 +105,7 @@ canvas {
   align-items: center;
 }
 .heart {
-  background-image: url("assets/hud/PVPlein.png");
+  background-image: url("./assets/hud/PVPlein.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -113,7 +113,7 @@ canvas {
   height: 40px;
 }
 .heart.lost {
-  background-image: url("assets/hud/PVvide.png");
+  background-image: url("./assets/hud/PVvide.png");
 }
 #timer {
   margin: 0 0 0 auto;

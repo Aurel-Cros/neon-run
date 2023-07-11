@@ -42,7 +42,7 @@ export class Game {
         this.audio.startGame();
 
         document.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowUp")
+            if (e.key === "F12")
                 this.time = 99
         })
     }
