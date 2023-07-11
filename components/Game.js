@@ -132,6 +132,7 @@ export class Game {
     _gameLost() {
         this.running = false;
         this.audio.loseGame();
+        this.audio.stopBgSound();
         this.HUD.timeStop();
         this.car.AnimationGameOver();
         setTimeout(() => { this._fadeOutCamera() }, 2000);
@@ -147,6 +148,7 @@ export class Game {
         this._fadeOutCamera();
         setTimeout(() => {
             this.HUD.timeStop();
+            this.audio.stopBgSound();
             this._deleteInstance();
         }, 5000);
     }

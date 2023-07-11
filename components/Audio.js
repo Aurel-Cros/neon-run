@@ -33,7 +33,10 @@ export class AudioHandler {
 		startAudio.volume = 1;
 		startAudio.play();
 	}
-
+	stopBgSound() {
+		this.engineSound.stop();
+		this.backGroundSound.stop();
+	}
 	// CRASH
 	carCrash() {
 		const crashAudio = new Audio("../assets/audio/car-crash.mp3");
@@ -79,7 +82,5 @@ export class AudioHandler {
 		const loseAudio = new Audio("../assets/audio/game-over.mp3");
 		loseAudio.volume = 1;
 		loseAudio.play();
-		this.engineSound.stop();
-		this.backGroundSound.stop();
 	}
 }
