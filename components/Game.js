@@ -129,7 +129,6 @@ export class Game {
 
     _gameLost() {
         this.running = false;
-        console.log("You loooose !");
         this.audio.loseGame();
         this.HUD.timeStop();
         this.car.AnimationGameOver();
@@ -138,9 +137,10 @@ export class Game {
     }
     _gameWon() {
         this.gameWon = true;
-        console.log("You win !");
         this.audio.winGame();
         this.obstacles.forEach(obstacle => {
+            obstacle.material.dispose();
+            obstacle.geometry.dispose();
             obstacle.removeFromParent();
         })
         this.obstacles = [];
@@ -149,6 +149,7 @@ export class Game {
         this._fadeOutCamera();
         setTimeout(() => { this._deleteInstance() }, 5000);
     }
+
     _fadeOutCamera() {
         this.wrapper.style.opacity = 0;
     }
@@ -162,7 +163,25 @@ export class Game {
                 clearInterval(awayInterval);
         }, 0.1)
     }
+
+    _freeMemoryAll() {
+        this.car.freeMemory();
+        for (const decor in this.decor) {
+            this.decor[decor].freeMemory();
+        }
+        this.obstacles.forEach(obstacle => {
+            obstacle.freeMemory();
+        })
+        this.plane.material.dispose();
+        this.plane.geometry.dispose();
+        this.grid.material.dispose();
+        this.grid.geometry.dispose();
+        this.backgroundSprite.material.map.dispose();
+        this.backgroundSprite.material.dispose();
+        this.backgroundSprite.geometry.dispose();
+    }
     _deleteInstance() {
+        this._freeMemoryAll();
         this.wrapper.replaceChildren();
         this.stop = true;
         if (this.gameWon) {
@@ -259,10 +278,10 @@ export class Game {
 
         const geometry = new THREE.PlaneGeometry(500, 250);
         const material = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
-        const plane = new THREE.Mesh(geometry, material);
-        plane.position.y = -0.1;
-        plane.rotateX(Math.PI / 180 * 90);
-        scene.add(plane);
+        this.plane = new THREE.Mesh(geometry, material);
+        this.plane.position.y = -0.1;
+        this.plane.rotateX(Math.PI / 180 * 90);
+        scene.add(this.plane);
 
         this.time = 0;
         this.clock = new THREE.Clock();

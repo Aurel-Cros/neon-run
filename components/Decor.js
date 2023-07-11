@@ -13,6 +13,13 @@ class Decor {
         // Negative number - Sets the separation between two decor elements
         this.decorOffset = -0;
     }
+    freeMemory() {
+        this.allDecors.forEach(decor => {
+            decor.material.map.dispose();
+            decor.material.dispose();
+            decor.geometry.dispose();
+        })
+    }
     moveDecor(speed) {
         const moveValue = Math.min(speed, 1);
 
@@ -32,7 +39,7 @@ class Decor {
     _createDecor() {
         const decor = new THREE.Mesh(
             new THREE.BoxGeometry(...this.decorSize),
-            new THREE.MeshBasicMaterial({ map: this.decorTexture, transparent: true, renderOrder: 1, depthWrite: false })
+            new THREE.MeshBasicMaterial({ map: this.decorTexture, transparent: true, depthWrite: false })
         );
 
         decor.position.y = 1.1;
@@ -109,7 +116,7 @@ export class Trees extends Decor {
         const texture = this.textures[this.lastTexture];
         const decor = new THREE.Mesh(
             new THREE.BoxGeometry(...this.decorSize),
-            new THREE.MeshBasicMaterial({ map: texture, transparent: true, renderOrder: 1, depthWrite: false })
+            new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false })
         );
         decor.position.y = 1.1;
         return decor;

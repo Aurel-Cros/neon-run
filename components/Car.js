@@ -293,9 +293,7 @@ export class Car {
 	}
 
 	_createCar(carSize) {
-		const texture = new THREE.TextureLoader().load(
-			"/assets/car/car_front1.png"
-		);
+		const texture = this.textures.front1;
 		const material = new THREE.SpriteMaterial({ map: texture });
 		const sprite = new THREE.Sprite(material);
 		sprite.scale.set(3, 3);
@@ -313,9 +311,19 @@ export class Car {
 		// body correspond a la voiture
 		this.body = new THREE.Group();
 		this.body.add(carBody, sprite);
+		this.mesh = carBody;
 		this.sprite = sprite;
 	}
+	freeMemory() {
+		this.sprite.material.map.dispose();
+		this.sprite.material.dispose();
+		this.mesh.material.dispose();
+		this.mesh.geometry.dispose();
 
+		for (const texture in this.textures) {
+			this.textures[texture].dispose();
+		}
+	}
 	_animationTurn(facteurDirection) {
 		this._clearIdle();
 		//Reccupère la position de la voiture, et en fonction de sa postion déclanche le changement de sprite centre -> gauche
