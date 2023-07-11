@@ -16,21 +16,23 @@ class Decor {
     moveDecor(speed) {
         const moveValue = Math.min(speed, 1);
 
+        this.allDecors.sort((a, b) => b.position.z - a.position.z);
+
         const lastDecor = this.allDecors.findLast(a => a);
         const nextPositionZ = lastDecor.position.z + this.decorOffset;
 
-        this.allDecors.forEach(decor => {
-            if (decor.position.z > 0)
+        this.allDecors.forEach((decor, index) => {
+            decor.position.z += moveValue;
+
+            if (index < 2 && decor.position.z > Math.abs(this.decorOffset))
                 decor.position.z = nextPositionZ;
-            else
-                decor.position.z += moveValue;
         })
     }
 
     _createDecor() {
         const decor = new THREE.Mesh(
             new THREE.BoxGeometry(...this.decorSize),
-            new THREE.MeshBasicMaterial({ map: this.decorTexture, transparent: true })
+            new THREE.MeshBasicMaterial({ map: this.decorTexture, transparent: true, renderOrder: 1, depthWrite: false })
         );
 
         decor.position.y = 1.1;
@@ -72,7 +74,7 @@ export class Rails extends Decor {
 export class Trees extends Decor {
     constructor(scene) {
         super(scene);
-        this.instancesNeeded = 6;
+        this.instancesNeeded = 8;
         this.xPosition = 15;
         this.decorSize = [34, 50, 0]; // Sets the size of each element
         this.decorOffset = -30; // Sets the space between two elements
@@ -107,7 +109,7 @@ export class Trees extends Decor {
         const texture = this.textures[this.lastTexture];
         const decor = new THREE.Mesh(
             new THREE.BoxGeometry(...this.decorSize),
-            new THREE.MeshBasicMaterial({ map: texture, transparent: true })
+            new THREE.MeshBasicMaterial({ map: texture, transparent: true, renderOrder: 1, depthWrite: false })
         );
         decor.position.y = 1.1;
         return decor;
