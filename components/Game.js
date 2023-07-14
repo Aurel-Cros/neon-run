@@ -163,10 +163,9 @@ export class Game {
     }
 
     _panCameraAway() {
-        this.car.body.position.z -= 0.01
         const startTime = this.time;
         const awayInterval = setInterval(() => {
-            this.car.body.position.z -= 0.5;
+            this.car.body.position.z -= 0.05;
             if (this.time > (startTime + 5))
                 clearInterval(awayInterval);
         }, 0.1)
